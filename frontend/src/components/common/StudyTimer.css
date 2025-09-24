@@ -1,0 +1,233 @@
+.study-timer {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.timer-header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.timer-header h3 {
+  margin-bottom: var(--spacing-sm);
+  color: var(--primary-green);
+}
+
+.session-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.session-type {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.session-type.study {
+  background: rgba(40, 167, 69, 0.1);
+  color: var(--primary-green);
+}
+
+.session-type.break {
+  background: rgba(0, 123, 255, 0.1);
+  color: var(--soft-blue);
+}
+
+.session-count {
+  font-size: 0.875rem;
+  color: var(--text-grey);
+  font-weight: 500;
+}
+
+.timer-display {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.timer-circle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-background {
+  fill: none;
+  stroke: var(--light-grey);
+  stroke-width: 8;
+}
+
+.progress-ring-progress {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.timer-text {
+  position: absolute;
+  text-align: center;
+}
+
+.time-display {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-green);
+  line-height: 1;
+}
+
+.time-label {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text-grey);
+  text-transform: capitalize;
+  margin-top: var(--spacing-xs);
+}
+
+.timer-presets {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.preset-btn {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: 2px solid var(--light-grey);
+  background: var(--white);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.preset-btn:hover {
+  border-color: var(--primary-green);
+  color: var(--primary-green);
+}
+
+.preset-btn.active {
+  background: var(--primary-green);
+  border-color: var(--primary-green);
+  color: var(--white);
+}
+
+.preset-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.start-btn {
+  min-width: 150px;
+}
+
+.active-controls {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.timer-tips {
+  background: rgba(40, 167, 69, 0.05);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  border-left: 4px solid var(--primary-green);
+}
+
+.timer-tips h4 {
+  margin-bottom: var(--spacing-sm);
+  color: var(--primary-green);
+  font-size: 0.875rem;
+}
+
+.timer-tips ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.timer-tips li {
+  font-size: 0.8125rem;
+  color: var(--text-grey);
+  margin-bottom: var(--spacing-xs);
+  padding-left: var(--spacing-md);
+  position: relative;
+}
+
+.timer-tips li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--primary-green);
+  font-weight: 600;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .study-timer {
+    padding: var(--spacing-lg);
+  }
+
+  .session-info {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .timer-circle {
+    transform: scale(0.8);
+  }
+
+  .time-display {
+    font-size: 2rem;
+  }
+
+  .timer-presets {
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .preset-btn {
+    flex: 1;
+    min-width: 60px;
+  }
+
+  .active-controls {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .timer-circle {
+    transform: scale(0.7);
+  }
+
+  .time-display {
+    font-size: 1.75rem;
+  }
+
+  .preset-btn {
+    padding: var(--spacing-xs);
+    font-size: 0.75rem;
+  }
+}
