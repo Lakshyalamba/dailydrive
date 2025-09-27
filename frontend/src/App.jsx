@@ -9,6 +9,7 @@ import CoursePage from './components/pages/CoursePage';
 import CourseDetail from './components/pages/CourseDetail';
 import Community from './components/pages/Community';
 import Analytics from './components/pages/Analytics';
+import Profile from './components/pages/Profile';
 import './styles/global.css';
 
 // Protected Route component
@@ -73,6 +74,9 @@ function AppContent() {
 
           <Route path="/analytics" element={
             <ProtectedRoute><Analytics /></ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute><Profile /></ProtectedRoute>
           } />
         </Routes>
       </main>

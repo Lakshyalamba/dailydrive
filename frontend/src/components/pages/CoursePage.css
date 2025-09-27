@@ -2,7 +2,10 @@
 .courses-catalog {
   padding: 100px var(--spacing-md) var(--spacing-xl);
   min-height: 100vh;
-  background-color: var(--light-grey);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/dashboardbg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .catalog-header {
@@ -182,7 +185,10 @@
 .course-detail {
   padding: 100px var(--spacing-md) var(--spacing-xl);
   min-height: 100vh;
-  background-color: var(--light-grey);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/dashboardbg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .course-loading {

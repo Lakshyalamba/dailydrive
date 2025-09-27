@@ -68,22 +68,24 @@ const Navbar = () => {
                   </button>
                 </>
               ) : (
-                <>
-                  <Link to="/courses" className="nav-link">Courses</Link>
-                  <Link to="/community" className="nav-link">Community</Link>
-                </>
+                // No navigation links for login/signup pages
+                null
               )
             )}
             
             <div className="navbar-actions">
               {user ? (
                 <>
-                  <div className="user-info">
+                  <Link to="/profile" className="user-info">
                     <div className="user-avatar-small">
-                      <span>{user.name.charAt(0)}</span>
+                      {user.profilePhoto ? (
+                        <img src={user.profilePhoto} alt="Profile" />
+                      ) : (
+                        <span>{user.name.charAt(0)}</span>
+                      )}
                     </div>
                     <span className="user-name">{user.name}</span>
-                  </div>
+                  </Link>
                   <button onClick={logout} className="btn btn-outline btn-small">Logout</button>
                 </>
               ) : (

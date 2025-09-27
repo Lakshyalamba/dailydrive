@@ -94,22 +94,19 @@ const Landing = () => {
           <h2>Our Curriculum</h2>
           <div className="grid grid-3">
             <Card hover>
-              <div className="curriculum-item">
-                <div className="curriculum-icon">💪</div>
+              <div className="curriculum-item fitness-bg">
                 <h3>Fitness & Health</h3>
                 <p>Comprehensive fitness programs, nutrition guidance, and wellness tracking to help you build sustainable healthy habits.</p>
               </div>
             </Card>
             <Card hover>
-              <div className="curriculum-item">
-                <div className="curriculum-icon">📚</div>
+              <div className="curriculum-item study-bg">
                 <h3>Study & Learning</h3>
                 <p>Effective study techniques, time management, and learning strategies to maximize your academic and professional growth.</p>
               </div>
             </Card>
             <Card hover>
-              <div className="curriculum-item">
-                <div className="curriculum-icon">🧘</div>
+              <div className="curriculum-item meditation-bg">
                 <h3>Mindfulness & Wellness</h3>
                 <p>Mental health practices, meditation techniques, and stress management tools for overall well-being.</p>
               </div>
@@ -124,32 +121,26 @@ const Landing = () => {
           <h2>Why Choose DailyDrive?</h2>
           <div className="benefits-grid">
             <div className="benefit-item">
-              <div className="benefit-icon">🎯</div>
               <h3>Personalized Goals</h3>
               <p>Set and track custom goals tailored to your lifestyle and aspirations.</p>
             </div>
             <div className="benefit-item">
-              <div className="benefit-icon">📊</div>
               <h3>Progress Tracking</h3>
               <p>Detailed analytics and insights to monitor your improvement over time.</p>
             </div>
             <div className="benefit-item">
-              <div className="benefit-icon">👥</div>
               <h3>Community Support</h3>
               <p>Connect with like-minded individuals on similar journeys.</p>
             </div>
             <div className="benefit-item">
-              <div className="benefit-icon">🏆</div>
               <h3>Expert Guidance</h3>
               <p>Learn from certified instructors and industry professionals.</p>
             </div>
             <div className="benefit-item">
-              <div className="benefit-icon">⏱️</div>
               <h3>Time Management</h3>
               <p>Optimize your schedule with smart reminders and productivity tools.</p>
             </div>
             <div className="benefit-item">
-              <div className="benefit-icon">💡</div>
               <h3>Knowledge Resources</h3>
               <p>Access curated articles, tutorials, and tips to enhance your skills and understanding.</p>
             </div>
@@ -174,8 +165,13 @@ const Landing = () => {
               </p>
             </div>
             <div className="about-image">
-              <div className="placeholder-image">
-                <span>🚀</span>
+              <div className="about-visual">
+                <div className="visual-element">
+                  <div className="shape-1"></div>
+                  <div className="shape-2"></div>
+                  <div className="shape-3"></div>
+                  <div className="shape-4"></div>
+                </div>
               </div>
             </div>
           </div>

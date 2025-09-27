@@ -1,7 +1,10 @@
 .dashboard {
   padding: 100px var(--spacing-md) var(--spacing-xl);
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/dashboardbg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .dashboard-loading {
@@ -150,8 +153,63 @@
 
 .category-progress {
   padding: var(--spacing-md);
-  background-color: var(--light-grey);
+  background-size: cover;
+  background-position: center;
   border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.category-progress::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1;
+}
+
+.category-progress > * {
+  position: relative;
+  z-index: 2;
+  color: white !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
+  font-weight: 600;
+}
+
+.category-progress .category-name {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: white !important;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
+}
+
+.category-progress .progress-bar {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.category-progress .progress-bar .progress-fill {
+  background-color: white !important;
+}
+
+.category-progress .progress-label {
+  color: white !important;
+  font-weight: 600;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
+}
+
+.category-progress.fitness {
+  background-image: url('/fitnessbg.jpg');
+}
+
+.category-progress.study {
+  background-image: url('/studybg.jpg');
+}
+
+.category-progress.wellness {
+  background-image: url('/meditationbg.jpg');
 }
 
 .category-header {
@@ -260,9 +318,7 @@
   justify-content: center;
 }
 
-.category-icon.fitness::before { content: '💪'; }
-.category-icon.study::before { content: '📚'; }
-.category-icon.wellness::before { content: '🧘'; }
+
 
 .activity-icon {
   width: 40px;

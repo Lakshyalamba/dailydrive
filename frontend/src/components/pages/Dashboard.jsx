@@ -57,9 +57,8 @@ const Dashboard = () => {
               <h3>Today's Progress</h3>
             </div>
             <div className="progress-categories">
-              <div className="category-progress">
+              <div className="category-progress fitness">
                 <div className="category-header">
-                  <span className="category-icon fitness"></span>
                   <span className="category-name">Fitness</span>
                 </div>
                 <ProgressBar 
@@ -68,9 +67,8 @@ const Dashboard = () => {
                   label={`${user.progress.fitness.weeklyCompleted}/${user.progress.fitness.weeklyGoal} workouts`}
                 />
               </div>
-              <div className="category-progress">
+              <div className="category-progress study">
                 <div className="category-header">
-                  <span className="category-icon study"></span>
                   <span className="category-name">Study</span>
                 </div>
                 <ProgressBar 
@@ -79,9 +77,8 @@ const Dashboard = () => {
                   label={`${user.progress.study.weeklyCompleted}/${user.progress.study.weeklyGoal} hours`}
                 />
               </div>
-              <div className="category-progress">
+              <div className="category-progress wellness">
                 <div className="category-header">
-                  <span className="category-icon wellness"></span>
                   <span className="category-name">Wellness</span>
                 </div>
                 <ProgressBar 

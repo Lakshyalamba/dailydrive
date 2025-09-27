@@ -109,11 +109,41 @@ export const AuthProvider = ({ children }) => {
     return 'Good evening';
   };
 
+  const updateProfile = async (profileData) => {
+    setLoading(true);
+    
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    // Update user profile
+    const updatedUser = {
+      ...user,
+      username: profileData.username,
+      name: profileData.username,
+      profilePhoto: profileData.profilePhoto
+    };
+    
+    // Update stored users
+    const storedUsers = JSON.parse(localStorage.getItem('dailydrive_users') || '{}');
+    if (storedUsers[user.email]) {
+      storedUsers[user.email].username = profileData.username;
+      storedUsers[user.email].profilePhoto = profileData.profilePhoto;
+      localStorage.setItem('dailydrive_users', JSON.stringify(storedUsers));
+    }
+    
+    setUser(updatedUser);
+    localStorage.setItem('dailydrive_user', JSON.stringify(updatedUser));
+    setLoading(false);
+    
+    return updatedUser;
+  };
+
   const value = {
     user,
     login,
     signup,
     logout,
+    updateProfile,
     loading,
     getGreeting,
     isAuthenticated: !!user
