@@ -48,12 +48,12 @@ const Landing = () => {
   return (
     <div className="landing-page">
       {/* Hero Section */}
-      <section className="hero">
+      <section className="landing-hero">
         <div className="container">
-          <div className="hero-content">
+          <div className="landing-hero-content">
             <h1>Empower Your Daily Growth</h1>
-            <p className="hero-subtitle">A smarter way to achieve your goals</p>
-            <p className="hero-description">
+            <p className="landing-hero-subtitle">A smarter way to achieve your goals</p>
+            <p className="landing-hero-description">
               Transform your life with our comprehensive self-improvement platform covering fitness,
               study schedules, free courses, and community support.
             </p>
@@ -65,22 +65,22 @@ const Landing = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="stats-section">
+      <section className="landing-stats-section">
         <div className="container">
-          <div className="stats-grid">
-            <div className="stat-item">
+          <div className="landing-stats-grid">
+            <div className="landing-stat-item">
               <h3>{stats.totalUsers?.toLocaleString()}</h3>
               <p>Active Users</p>
             </div>
-            <div className="stat-item">
+            <div className="landing-stat-item">
               <h3>{stats.coursesCompleted?.toLocaleString()}</h3>
               <p>Courses Completed</p>
             </div>
-            <div className="stat-item">
+            <div className="landing-stat-item">
               <h3>{stats.communityPosts?.toLocaleString()}</h3>
               <p>Community Posts</p>
             </div>
-            <div className="stat-item">
+            <div className="landing-stat-item">
               <h3>{stats.successRate}%</h3>
               <p>Success Rate</p>
             </div>
@@ -94,19 +94,19 @@ const Landing = () => {
           <h2>Our Curriculum</h2>
           <div className="grid grid-3">
             <Card hover>
-              <div className="curriculum-item fitness-bg">
+              <div className="landing-curriculum-item fitness-bg">
                 <h3>Fitness & Health</h3>
                 <p>Comprehensive fitness programs, nutrition guidance, and wellness tracking to help you build sustainable healthy habits.</p>
               </div>
             </Card>
             <Card hover>
-              <div className="curriculum-item study-bg">
+              <div className="landing-curriculum-item study-bg">
                 <h3>Study & Learning</h3>
                 <p>Effective study techniques, time management, and learning strategies to maximize your academic and professional growth.</p>
               </div>
             </Card>
             <Card hover>
-              <div className="curriculum-item meditation-bg">
+              <div className="landing-curriculum-item meditation-bg">
                 <h3>Mindfulness & Wellness</h3>
                 <p>Mental health practices, meditation techniques, and stress management tools for overall well-being.</p>
               </div>
@@ -116,31 +116,31 @@ const Landing = () => {
       </section>
 
       {/* Benefits Section */}
-      <section id="benefits" className="section benefits-section">
+      <section id="benefits" className="section landing-benefits-section">
         <div className="container">
           <h2>Why Choose DailyDrive?</h2>
-          <div className="benefits-grid">
-            <div className="benefit-item">
+          <div className="landing-benefits-grid">
+            <div className="landing-benefit-item">
               <h3>Personalized Goals</h3>
               <p>Set and track custom goals tailored to your lifestyle and aspirations.</p>
             </div>
-            <div className="benefit-item">
+            <div className="landing-benefit-item">
               <h3>Progress Tracking</h3>
               <p>Detailed analytics and insights to monitor your improvement over time.</p>
             </div>
-            <div className="benefit-item">
+            <div className="landing-benefit-item">
               <h3>Community Support</h3>
               <p>Connect with like-minded individuals on similar journeys.</p>
             </div>
-            <div className="benefit-item">
+            <div className="landing-benefit-item">
               <h3>Expert Guidance</h3>
               <p>Learn from certified instructors and industry professionals.</p>
             </div>
-            <div className="benefit-item">
+            <div className="landing-benefit-item">
               <h3>Time Management</h3>
               <p>Optimize your schedule with smart reminders and productivity tools.</p>
             </div>
-            <div className="benefit-item">
+            <div className="landing-benefit-item">
               <h3>Knowledge Resources</h3>
               <p>Access curated articles, tutorials, and tips to enhance your skills and understanding.</p>
             </div>
@@ -151,8 +151,8 @@ const Landing = () => {
       {/* About Section */}
       <section id="about" className="section">
         <div className="container">
-          <div className="about-content">
-            <div className="about-text">
+          <div className="landing-about-content">
+            <div className="landing-about-text">
               <h2>About DailyDrive</h2>
               <p>
                 DailyDrive was founded with a simple mission: to make self-improvement accessible,
@@ -164,13 +164,13 @@ const Landing = () => {
                 build lasting habits, achieve your goals, and connect with a supportive community.
               </p>
             </div>
-            <div className="about-image">
-              <div className="about-visual">
-                <div className="visual-element">
-                  <div className="shape-1"></div>
-                  <div className="shape-2"></div>
-                  <div className="shape-3"></div>
-                  <div className="shape-4"></div>
+            <div className="landing-about-image">
+              <div className="landing-about-visual">
+                <div className="landing-visual-element">
+                  <div className="landing-shape-1"></div>
+                  <div className="landing-shape-2"></div>
+                  <div className="landing-shape-3"></div>
+                  <div className="landing-shape-4"></div>
                 </div>
               </div>
             </div>
@@ -179,26 +179,26 @@ const Landing = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="section testimonials-section">
+      <section id="testimonials" className="section landing-testimonials-section">
         <div className="container">
           <h2>What Our Users Say</h2>
           <div className="grid grid-3">
             {testimonials.map(testimonial => (
               <Card key={testimonial.id} hover>
-                <div className="testimonial">
-                  <div className="testimonial-content">
+                <div className="landing-testimonial">
+                  <div className="landing-testimonial-content">
                     <p>"{testimonial.content}"</p>
                   </div>
-                  <div className="testimonial-author">
-                    <div className="author-avatar">
+                  <div className="landing-testimonial-author">
+                    <div className="landing-author-avatar">
                       <span>{testimonial.name.charAt(0)}</span>
                     </div>
-                    <div className="author-info">
+                    <div className="landing-author-info">
                       <h4>{testimonial.name}</h4>
                       <p>{testimonial.course}</p>
                     </div>
                   </div>
-                  <div className="testimonial-rating">
+                  <div className="landing-testimonial-rating">
                     {'★'.repeat(testimonial.rating)}
                   </div>
                 </div>
@@ -212,17 +212,17 @@ const Landing = () => {
       <section id="faq" className="section">
         <div className="container">
           <h2>Frequently Asked Questions</h2>
-          <div className="faq-list">
+          <div className="landing-faq-list">
             {faqData.map((faq, index) => (
-              <div key={index} className="faq-item">
+              <div key={index} className="landing-faq-item">
                 <button
-                  className={`faq-question ${openFaq === index ? 'active' : ''}`}
+                  className={`landing-faq-question ${openFaq === index ? 'active' : ''}`}
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
                 >
                   {faq.question}
-                  <span className="faq-icon">{openFaq === index ? '−' : '+'}</span>
+                  <span className="landing-faq-icon">{openFaq === index ? '−' : '+'}</span>
                 </button>
-                <div className={`faq-answer ${openFaq === index ? 'open' : ''}`}>
+                <div className={`landing-faq-answer ${openFaq === index ? 'open' : ''}`}>
                   <p>{faq.answer}</p>
                 </div>
               </div>
@@ -231,16 +231,14 @@ const Landing = () => {
         </div>
       </section>
 
-
-
       {/* Community Section */}
       <section id="community" className="section">
         <div className="container">
           <h2>Join Our Community</h2>
-          <p className="section-subtitle">
+          <p className="landing-section-subtitle">
             Connect with thousands of motivated individuals on their self-improvement journey
           </p>
-          <div className="community-actions">
+          <div className="landing-community-actions">
             <Link to="/community">
               <Button size="large">Join Discussion</Button>
             </Link>

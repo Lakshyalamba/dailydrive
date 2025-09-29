@@ -22,7 +22,7 @@ const Dashboard = () => {
   if (!user) {
     return (
       <div className="dashboard-loading">
-        <div className="spinner-large"></div>
+        <div className="dashboard-spinner-large"></div>
       </div>
     );
   }
@@ -40,26 +40,26 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="dashboard-loading">
-        <div className="spinner-large"></div>
+        <div className="dashboard-spinner-large"></div>
       </div>
     );
   }
 
   return (
-    <div className="dashboard">
+    <div className="dashboard-main">
       <div className="container">
         <WelcomeHeader />
 
         <div className="dashboard-grid">
           {/* Progress Overview */}
-          <Card className="progress-overview">
+          <Card className="dashboard-progress-overview">
             <div className="card-header">
               <h3>Today's Progress</h3>
             </div>
-            <div className="progress-categories">
-              <div className="category-progress fitness">
-                <div className="category-header">
-                  <span className="category-name">Fitness</span>
+            <div className="dashboard-progress-categories">
+              <div className="dashboard-category-progress fitness">
+                <div className="dashboard-category-header">
+                  <span className="dashboard-category-name">Fitness</span>
                 </div>
                 <ProgressBar 
                   progress={user.progress.fitness.weeklyCompleted}
@@ -67,9 +67,9 @@ const Dashboard = () => {
                   label={`${user.progress.fitness.weeklyCompleted}/${user.progress.fitness.weeklyGoal} workouts`}
                 />
               </div>
-              <div className="category-progress study">
-                <div className="category-header">
-                  <span className="category-name">Study</span>
+              <div className="dashboard-category-progress study">
+                <div className="dashboard-category-header">
+                  <span className="dashboard-category-name">Study</span>
                 </div>
                 <ProgressBar 
                   progress={user.progress.study.weeklyCompleted}
@@ -77,9 +77,9 @@ const Dashboard = () => {
                   label={`${user.progress.study.weeklyCompleted}/${user.progress.study.weeklyGoal} hours`}
                 />
               </div>
-              <div className="category-progress wellness">
-                <div className="category-header">
-                  <span className="category-name">Wellness</span>
+              <div className="dashboard-category-progress wellness">
+                <div className="dashboard-category-header">
+                  <span className="dashboard-category-name">Wellness</span>
                 </div>
                 <ProgressBar 
                   progress={user.progress.wellness.weeklyCompleted}
@@ -91,21 +91,21 @@ const Dashboard = () => {
           </Card>
 
           {/* My Courses */}
-          <Card className="my-courses">
+          <Card className="dashboard-my-courses">
             <div className="card-header">
               <h3>My Courses</h3>
               <Link to="/courses">
                 <Button variant="outline" size="small">View All</Button>
               </Link>
             </div>
-            <div className="courses-list">
+            <div className="dashboard-courses-list">
               {enrolledCourses.map(course => (
-                <div key={course.id} className="course-item">
-                  <div className="course-info">
+                <div key={course.id} className="dashboard-course-item">
+                  <div className="dashboard-course-info">
                     <h4>{course.title}</h4>
                     <p>{course.instructor.name}</p>
                   </div>
-                  <div className="course-progress">
+                  <div className="dashboard-course-progress">
                     <ProgressBar 
                       progress={course.progress}
                       showPercentage={true}
@@ -120,24 +120,20 @@ const Dashboard = () => {
             </div>
           </Card>
 
-
-
-
-
           {/* Goals */}
-          <Card className="goals-section">
+          <Card className="dashboard-goals-section">
             <div className="card-header">
               <h3>Current Goals</h3>
               <Button variant="outline" size="small">Add Goal</Button>
             </div>
-            <div className="goals-list">
+            <div className="dashboard-goals-list">
               {goals.map(goal => (
-                <div key={goal.id} className="goal-item">
-                  <div className="goal-info">
+                <div key={goal.id} className="dashboard-goal-item">
+                  <div className="dashboard-goal-info">
                     <h4>{goal.name}</h4>
                     <p>Category: {goal.category}</p>
                   </div>
-                  <div className="goal-progress">
+                  <div className="dashboard-goal-progress">
                     <ProgressBar 
                       progress={goal.current}
                       max={goal.target}
@@ -149,8 +145,6 @@ const Dashboard = () => {
               ))}
             </div>
           </Card>
-
-
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-.dashboard {
+.dashboard-main {
   padding: 100px var(--spacing-md) var(--spacing-xl);
   min-height: 100vh;
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/dashboardbg.jpg');
@@ -14,7 +14,7 @@
   min-height: 100vh;
 }
 
-.spinner-large {
+.dashboard-spinner-large {
   width: 40px;
   height: 40px;
   border: 4px solid var(--light-grey);
@@ -47,7 +47,7 @@
   background: linear-gradient(90deg, var(--primary-green), var(--light-green));
 }
 
-.welcome-section h1 {
+.dashboard-welcome-section h1 {
   margin-bottom: var(--spacing-xs);
   background: linear-gradient(135deg, var(--primary-green), var(--light-green));
   -webkit-background-clip: text;
@@ -57,19 +57,19 @@
   font-weight: 800;
 }
 
-.welcome-section p {
+.dashboard-welcome-section p {
   margin-bottom: 0;
   font-size: 1.125rem;
   color: var(--text-grey);
   font-weight: 500;
 }
 
-.user-stats {
+.dashboard-user-stats {
   display: flex;
   gap: var(--spacing-lg);
 }
 
-.stat-item {
+.dashboard-stat-item {
   text-align: center;
   padding: var(--spacing-md);
   background: rgba(255, 255, 255, 0.7);
@@ -79,12 +79,12 @@
   transition: all var(--transition-fast);
 }
 
-.stat-item:hover {
+.dashboard-stat-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 20px rgba(40, 167, 69, 0.2);
 }
 
-.stat-number {
+.dashboard-stat-number {
   display: block;
   font-size: 2rem;
   font-weight: 700;
@@ -92,7 +92,7 @@
   margin-bottom: var(--spacing-xs);
 }
 
-.stat-label {
+.dashboard-stat-label {
   font-size: 0.875rem;
   color: var(--text-grey);
   font-weight: 500;
@@ -105,9 +105,9 @@
   margin-bottom: var(--spacing-xl);
 }
 
-.progress-overview,
-.my-courses,
-.goals-section {
+.dashboard-progress-overview,
+.dashboard-my-courses,
+.dashboard-goals-section {
   grid-column: 1;
 }
 
@@ -144,14 +144,13 @@
 }
 
 /* Progress Overview */
-
-.progress-categories {
+.dashboard-progress-categories {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--spacing-lg);
 }
 
-.category-progress {
+.dashboard-category-progress {
   padding: var(--spacing-md);
   background-size: cover;
   background-position: center;
@@ -160,7 +159,7 @@
   overflow: hidden;
 }
 
-.category-progress::before {
+.dashboard-category-progress::before {
   content: '';
   position: absolute;
   top: 0;
@@ -171,7 +170,7 @@
   z-index: 1;
 }
 
-.category-progress > * {
+.dashboard-category-progress > * {
   position: relative;
   z-index: 2;
   color: white !important;
@@ -179,63 +178,59 @@
   font-weight: 600;
 }
 
-.category-progress .category-name {
+.dashboard-category-progress .dashboard-category-name {
   font-weight: 800;
   font-size: 1.2rem;
   color: white !important;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
 }
 
-.category-progress .progress-bar {
+.dashboard-category-progress .progress-bar {
   background-color: rgba(255, 255, 255, 0.3) !important;
 }
 
-.category-progress .progress-bar .progress-fill {
+.dashboard-category-progress .progress-bar .progress-fill {
   background-color: white !important;
 }
 
-.category-progress .progress-label {
+.dashboard-category-progress .progress-label {
   color: white !important;
   font-weight: 600;
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
 }
 
-.category-progress.fitness {
+.dashboard-category-progress.fitness {
   background-image: url('/fitnessbg.jpg');
 }
 
-.category-progress.study {
+.dashboard-category-progress.study {
   background-image: url('/studybg.jpg');
 }
 
-.category-progress.wellness {
+.dashboard-category-progress.wellness {
   background-image: url('/meditationbg.jpg');
 }
 
-.category-header {
+.dashboard-category-header {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
   margin-bottom: var(--spacing-md);
 }
 
-.category-icon {
-  font-size: 1.5rem;
-}
-
-.category-name {
+.dashboard-category-name {
   font-weight: 600;
   color: #333;
 }
 
 /* My Courses */
-.courses-list {
+.dashboard-courses-list {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
 }
 
-.course-item {
+.dashboard-course-item {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
@@ -244,193 +239,33 @@
   border-radius: var(--radius-md);
 }
 
-.course-info {
+.dashboard-course-info {
   flex: 1;
 }
 
-.course-info h4 {
+.dashboard-course-info h4 {
   margin-bottom: var(--spacing-xs);
   color: #333;
 }
 
-.course-info p {
+.dashboard-course-info p {
   margin-bottom: 0;
   font-size: 0.875rem;
 }
 
-.course-progress {
+.dashboard-course-progress {
   flex: 1;
   max-width: 150px;
-}
-
-/* Quick Actions */
-.quick-actions {
-  max-height: 200px;
-}
-
-.actions-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-sm);
-}
-
-.action-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-sm);
-  background-color: var(--light-grey);
-  border-radius: var(--radius-md);
-  text-decoration: none;
-  color: #333;
-  transition: all var(--transition-fast);
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  height: 70px;
-  font-size: 0.875rem;
-}
-
-.action-item:hover {
-  background-color: var(--primary-green);
-  color: var(--white);
-  transform: translateY(-2px);
-}
-
-.action-icon {
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.action-icon.courses::before { content: '📚'; }
-.action-icon.community::before { content: '👥'; }
-.action-icon.analytics::before { content: '📊'; }
-.action-icon.goals::before { content: '🎯'; }
-
-.category-icon {
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-
-.activity-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-}
-
-.activity-icon.workout::before { content: '💪'; }
-.activity-icon.study::before { content: '📚'; }
-.activity-icon.meditation::before { content: '🧘'; }
-.activity-icon.community::before { content: '👥'; }
-.activity-icon.welcome::before { content: '🚀'; }
-.activity-icon.achievement::before { content: '🏆'; }
-
-/* Recent Activity */
-.recent-activity {
-  max-height: 250px;
-}
-
-.activity-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-  max-height: 180px;
-  overflow-y: auto;
-  padding-right: var(--spacing-xs);
-}
-
-.activity-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.activity-list::-webkit-scrollbar-track {
-  background: var(--light-grey);
-  border-radius: var(--radius-sm);
-}
-
-.activity-list::-webkit-scrollbar-thumb {
-  background: var(--primary-green);
-  border-radius: var(--radius-sm);
-}
-
-.activity-list::-webkit-scrollbar-thumb:hover {
-  background: var(--dark-green);
-}
-
-.activity-item {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-xs);
-  border-radius: var(--radius-md);
-  transition: background-color var(--transition-fast);
-  min-height: 50px;
-}
-
-.activity-item:hover {
-  background-color: var(--light-grey);
-}
-
-.activity-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-}
-
-.activity-icon.workout {
-  background-color: rgba(40, 167, 69, 0.1);
-}
-
-.activity-icon.study {
-  background-color: rgba(0, 123, 255, 0.1);
-}
-
-.activity-icon.meditation {
-  background-color: rgba(108, 117, 125, 0.1);
-}
-
-.activity-icon.community {
-  background-color: rgba(46, 204, 113, 0.1);
-}
-
-.activity-content {
-  flex: 1;
-}
-
-.activity-content p {
-  margin-bottom: var(--spacing-xs);
-  font-weight: 500;
-}
-
-.activity-time {
-  font-size: 0.875rem;
-  color: var(--text-grey);
 }
 
 /* Goals */
-.goals-list {
+.dashboard-goals-list {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
 }
 
-.goal-item {
+.dashboard-goal-item {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
@@ -439,117 +274,28 @@
   border-radius: var(--radius-md);
 }
 
-.goal-info {
+.dashboard-goal-info {
   flex: 1;
 }
 
-.goal-info h4 {
+.dashboard-goal-info h4 {
   margin-bottom: var(--spacing-xs);
   color: #333;
 }
 
-.goal-info p {
+.dashboard-goal-info p {
   margin-bottom: 0;
   font-size: 0.875rem;
 }
 
-.goal-progress {
+.dashboard-goal-progress {
   flex: 1;
   max-width: 150px;
 }
 
-/* Notifications */
-.notifications {
-  max-height: 250px;
-}
-
-.notifications-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-  max-height: 200px;
-  overflow-y: auto;
-  padding-right: var(--spacing-xs);
-}
-
-.notifications-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-.notifications-list::-webkit-scrollbar-track {
-  background: var(--light-grey);
-  border-radius: var(--radius-sm);
-}
-
-.notifications-list::-webkit-scrollbar-thumb {
-  background: var(--primary-green);
-  border-radius: var(--radius-sm);
-}
-
-.notifications-list::-webkit-scrollbar-thumb:hover {
-  background: var(--dark-green);
-}
-
-.notification-item {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--radius-md);
-  border-left: 3px solid var(--primary-green);
-  min-height: 50px;
-}
-
-.notification-item.reminder {
-  background-color: rgba(40, 167, 69, 0.1);
-  border-left-color: var(--primary-green);
-}
-
-.notification-item.achievement {
-  background-color: rgba(255, 193, 7, 0.1);
-  border-left-color: #ffc107;
-}
-
-.notification-item.course {
-  background-color: rgba(0, 123, 255, 0.1);
-  border-left-color: var(--soft-blue);
-}
-
-.notification-content {
-  flex: 1;
-}
-
-.notification-content p {
-  margin-bottom: 2px;
-  font-weight: 500;
-  font-size: 0.875rem;
-}
-
-.notification-time {
-  font-size: 0.75rem;
-  color: var(--text-grey);
-}
-
-.notification-close {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: var(--text-grey);
-  cursor: pointer;
-  padding: var(--spacing-xs);
-  border-radius: 50%;
-  transition: all var(--transition-fast);
-}
-
-.notification-close:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-  color: var(--error-red);
-}
-
 /* Responsive Design */
-/* Tablet styles */
 @media (max-width: 1024px) {
-  .progress-categories {
+  .dashboard-progress-categories {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
@@ -558,14 +304,13 @@
     padding: 2rem;
   }
   
-  .user-stats {
+  .dashboard-user-stats {
     gap: 1rem;
   }
 }
 
-/* Mobile styles */
 @media (max-width: 768px) {
-  .dashboard {
+  .dashboard-main {
     padding: 80px 1rem 2rem 1rem;
   }
   
@@ -576,22 +321,22 @@
     padding: 1.5rem;
   }
   
-  .welcome-section h1 {
+  .dashboard-welcome-section h1 {
     font-size: 2rem;
   }
   
-  .user-stats {
+  .dashboard-user-stats {
     justify-content: center;
     flex-wrap: wrap;
     gap: 1rem;
   }
   
-  .stat-item {
+  .dashboard-stat-item {
     min-width: 120px;
     padding: 1rem;
   }
   
-  .stat-number {
+  .dashboard-stat-number {
     font-size: 1.5rem;
   }
   
@@ -600,35 +345,24 @@
     gap: 1.5rem;
   }
   
-  .progress-categories {
+  .dashboard-progress-categories {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
   
-  .course-item, .goal-item {
+  .dashboard-course-item, .dashboard-goal-item {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
   }
   
-  .course-progress, .goal-progress {
+  .dashboard-course-progress, .dashboard-goal-progress {
     max-width: none;
-  }
-  
-  .actions-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-  }
-  
-  .action-item {
-    height: 80px;
-    font-size: 0.8rem;
   }
 }
 
-/* Small mobile styles */
 @media (max-width: 480px) {
-  .dashboard {
+  .dashboard-main {
     padding: 70px 0.75rem 1.5rem 0.75rem;
   }
   
@@ -636,38 +370,25 @@
     padding: 1rem;
   }
   
-  .welcome-section h1 {
+  .dashboard-welcome-section h1 {
     font-size: 1.75rem;
   }
   
-  .welcome-section p {
+  .dashboard-welcome-section p {
     font-size: 1rem;
   }
   
-  .user-stats {
+  .dashboard-user-stats {
     flex-direction: column;
     align-items: center;
   }
   
-  .stat-item {
+  .dashboard-stat-item {
     width: 100%;
     max-width: 200px;
   }
   
   .dashboard-grid .card {
     padding: 1rem;
-  }
-  
-  .actions-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .action-item {
-    height: 60px;
-    font-size: 0.875rem;
-  }
-  
-  .activity-list, .notifications-list {
-    max-height: 150px;
   }
 }

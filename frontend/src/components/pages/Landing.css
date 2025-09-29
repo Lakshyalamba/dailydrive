@@ -1,5 +1,5 @@
 /* Hero Section */
-.hero {
+.landing-hero {
   background: linear-gradient(135deg, rgba(40, 167, 69, 0.8), rgba(32, 201, 151, 0.8)), url('/1.jpg');
   background-size: cover;
   background-position: center;
@@ -11,7 +11,7 @@
   position: relative;
 }
 
-.hero::before {
+.landing-hero::before {
   content: '';
   position: absolute;
   top: 0;
@@ -22,24 +22,24 @@
   z-index: 1;
 }
 
-.hero .container {
+.landing-hero .container {
   position: relative;
   z-index: 2;
 }
 
-.hero-content h1 {
+.landing-hero-content h1 {
   color: var(--white);
   font-size: 3rem;
   margin-bottom: var(--spacing-md);
 }
 
-.hero-subtitle {
+.landing-hero-subtitle {
   font-size: 1.5rem;
   margin-bottom: var(--spacing-md);
   color: rgba(255, 255, 255, 0.9);
 }
 
-.hero-description {
+.landing-hero-description {
   font-size: 1.125rem;
   max-width: 600px;
   margin: 0 auto var(--spacing-lg);
@@ -47,31 +47,31 @@
 }
 
 /* Stats Section */
-.stats-section {
+.landing-stats-section {
   background-color: var(--light-grey);
   padding: var(--spacing-lg) 0;
 }
 
-.stats-grid {
+.landing-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-lg);
   text-align: center;
 }
 
-.stat-item h3 {
+.landing-stat-item h3 {
   font-size: 2.5rem;
   color: var(--primary-green);
   margin-bottom: var(--spacing-xs);
 }
 
-.stat-item p {
+.landing-stat-item p {
   color: var(--text-grey);
   font-weight: 500;
 }
 
 /* Curriculum Section */
-.curriculum-item {
+.landing-curriculum-item {
   text-align: center;
   position: relative;
   min-height: 300px;
@@ -87,7 +87,7 @@
   overflow: hidden;
 }
 
-.curriculum-item::before {
+.landing-curriculum-item::before {
   content: '';
   position: absolute;
   top: 0;
@@ -98,39 +98,39 @@
   z-index: 1;
 }
 
-.curriculum-item h3,
-.curriculum-item p {
+.landing-curriculum-item h3,
+.landing-curriculum-item p {
   position: relative;
   z-index: 2;
   color: var(--white);
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.curriculum-item.fitness-bg {
+.landing-curriculum-item.fitness-bg {
   background-image: url('/fitnessbg.jpg');
 }
 
-.curriculum-item.study-bg {
+.landing-curriculum-item.study-bg {
   background-image: url('/studybg.jpg');
 }
 
-.curriculum-item.meditation-bg {
+.landing-curriculum-item.meditation-bg {
   background-image: url('/meditationbg.jpg');
 }
 
 /* Benefits Section */
-.benefits-section {
+.landing-benefits-section {
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   position: relative;
 }
 
-.benefits-grid {
+.landing-benefits-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--spacing-xl);
 }
 
-.benefit-item {
+.landing-benefit-item {
   background: rgba(255, 255, 255, 0.9);
   padding: var(--spacing-xl);
   border-radius: var(--radius-lg);
@@ -142,7 +142,7 @@
   overflow: hidden;
 }
 
-.benefit-item::before {
+.landing-benefit-item::before {
   content: '';
   position: absolute;
   top: 0;
@@ -154,16 +154,16 @@
   transition: opacity var(--transition-fast);
 }
 
-.benefit-item:hover {
+.landing-benefit-item:hover {
   transform: translateY(-8px);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
 }
 
-.benefit-item:hover::before {
+.landing-benefit-item:hover::before {
   opacity: 1;
 }
 
-.benefit-item h3 {
+.landing-benefit-item h3 {
   color: var(--primary-green);
   font-size: 1.25rem;
   font-weight: 600;
@@ -171,7 +171,7 @@
   line-height: 1.3;
 }
 
-.benefit-item p {
+.landing-benefit-item p {
   color: var(--text-grey);
   line-height: 1.6;
   font-size: 0.9375rem;
@@ -179,7 +179,7 @@
 }
 
 /* About Section */
-.about-content {
+.landing-about-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-xl);
@@ -187,18 +187,18 @@
   padding: var(--spacing-xl) 0;
 }
 
-.about-text {
+.landing-about-text {
   position: relative;
 }
 
-.about-text h2 {
+.landing-about-text h2 {
   font-size: 2.5rem;
   color: var(--primary-green);
   margin-bottom: var(--spacing-lg);
   position: relative;
 }
 
-.about-text h2::after {
+.landing-about-text h2::after {
   content: '';
   position: absolute;
   bottom: -10px;
@@ -209,20 +209,20 @@
   border-radius: 2px;
 }
 
-.about-text p {
+.landing-about-text p {
   font-size: 1.125rem;
   line-height: 1.7;
   color: var(--text-grey);
   margin-bottom: var(--spacing-lg);
 }
 
-.about-image {
+.landing-about-image {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.about-visual {
+.landing-about-visual {
   position: relative;
   width: 350px;
   height: 350px;
@@ -231,7 +231,7 @@
   justify-content: center;
 }
 
-.visual-element {
+.landing-visual-element {
   position: relative;
   width: 300px;
   height: 300px;
@@ -247,34 +247,34 @@
   padding: 30px;
 }
 
-.shape-1 {
+.landing-shape-1 {
   background: linear-gradient(135deg, var(--primary-green), var(--light-green));
   border-radius: 50%;
   box-shadow: 0 10px 30px rgba(40, 167, 69, 0.3);
 }
 
-.shape-2 {
+.landing-shape-2 {
   background: rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-md);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.shape-3 {
+.landing-shape-3 {
   background: linear-gradient(45deg, var(--light-green), var(--soft-blue));
   border-radius: var(--radius-sm);
   transform: rotate(45deg);
   box-shadow: 0 8px 25px rgba(0, 123, 255, 0.2);
 }
 
-.shape-4 {
+.landing-shape-4 {
   background: rgba(40, 167, 69, 0.1);
   border-radius: 50%;
   border: 2px solid var(--primary-green);
   position: relative;
 }
 
-.shape-4::after {
+.landing-shape-4::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -287,19 +287,19 @@
 }
 
 /* Testimonials Section */
-.testimonials-section {
+.landing-testimonials-section {
   background-color: var(--light-grey);
 }
 
-.testimonial {
+.landing-testimonial {
   text-align: center;
 }
 
-.testimonial-content {
+.landing-testimonial-content {
   margin-bottom: var(--spacing-md);
 }
 
-.testimonial-author {
+.landing-testimonial-author {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -307,7 +307,7 @@
   margin-bottom: var(--spacing-sm);
 }
 
-.author-avatar {
+.landing-author-avatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -319,32 +319,32 @@
   font-weight: 600;
 }
 
-.author-info h4 {
+.landing-author-info h4 {
   margin-bottom: 0;
   color: #333;
 }
 
-.author-info p {
+.landing-author-info p {
   margin-bottom: 0;
   font-size: 0.875rem;
 }
 
-.testimonial-rating {
+.landing-testimonial-rating {
   color: #ffc107;
   font-size: 1.25rem;
 }
 
 /* FAQ Section */
-.faq-list {
+.landing-faq-list {
   max-width: 800px;
   margin: 0 auto;
 }
 
-.faq-item {
+.landing-faq-item {
   border-bottom: 1px solid var(--light-grey);
 }
 
-.faq-question {
+.landing-faq-question {
   width: 100%;
   padding: var(--spacing-md) 0;
   background: none;
@@ -360,37 +360,35 @@
   transition: color var(--transition-fast);
 }
 
-.faq-question:hover {
+.landing-faq-question:hover {
   color: var(--dark-green);
 }
 
-.faq-icon {
+.landing-faq-icon {
   font-size: 1.5rem;
   color: var(--primary-green);
 }
 
-.faq-answer {
+.landing-faq-answer {
   max-height: 0;
   overflow: hidden;
   transition: max-height var(--transition-normal);
 }
 
-.faq-answer.open {
+.landing-faq-answer.open {
   max-height: 200px;
   padding-bottom: var(--spacing-md);
 }
 
-
-
 /* Community Section */
-.section-subtitle {
+.landing-section-subtitle {
   text-align: center;
   font-size: 1.125rem;
   max-width: 600px;
   margin: 0 auto var(--spacing-lg);
 }
 
-.community-actions {
+.landing-community-actions {
   display: flex;
   justify-content: center;
   gap: var(--spacing-md);
@@ -399,50 +397,50 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .hero-content h1 {
+  .landing-hero-content h1 {
     font-size: 2rem;
   }
   
-  .hero-subtitle {
+  .landing-hero-subtitle {
     font-size: 1.25rem;
   }
   
-  .about-content {
+  .landing-about-content {
     grid-template-columns: 1fr;
     text-align: center;
     gap: var(--spacing-lg);
   }
   
-  .about-text h2 {
+  .landing-about-text h2 {
     font-size: 2rem;
   }
   
-  .about-text h2::after {
+  .landing-about-text h2::after {
     left: 50%;
     transform: translateX(-50%);
   }
   
-  .about-text p {
+  .landing-about-text p {
     font-size: 1rem;
   }
   
-  .about-visual {
+  .landing-about-visual {
     width: 250px;
     height: 250px;
   }
   
-  .visual-element {
+  .landing-visual-element {
     width: 250px;
     height: 250px;
     padding: 20px;
     gap: 15px;
   }
   
-  .stats-grid {
+  .landing-stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   
-  .stat-item h3 {
+  .landing-stat-item h3 {
     font-size: 2rem;
   }
 }
