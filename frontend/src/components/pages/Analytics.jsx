@@ -3,12 +3,13 @@ import Card from '../common/Card';
 import Button from '../common/Button';
 import ProgressBar from '../common/ProgressBar';
 import { useAuth } from '../../contexts/AuthContext';
+import { detailedCourses } from '../../data/mockDetailedCourses';
+import jsPDF from 'jspdf';
 import './Analytics.css';
 
 const Analytics = () => {
-  const { user } = useAuth();
+  const { user, getOverallProgress, getCourseProgress } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [selectedPeriod, setSelectedPeriod] = useState('week');
 
   useEffect(() => {
     if (user) {
@@ -16,15 +17,83 @@ const Analytics = () => {
     }
   }, [user]);
 
-  const periods = [
-    { id: 'week', name: 'This Week' },
-    { id: 'month', name: 'This Month' },
-    { id: 'year', name: 'This Year' }
-  ];
-
-  const exportData = (format) => {
-    console.log(`Exporting data as ${format}`);
-    alert(`Analytics data exported as ${format.toUpperCase()}`);
+  const exportToPDF = () => {
+    const pdf = new jsPDF();
+    const pageWidth = pdf.internal.pageSize.width;
+    const pageHeight = pdf.internal.pageSize.height;
+    
+    // Background color
+    pdf.setFillColor(240, 248, 255);
+    pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+    
+    // Header background
+    pdf.setFillColor(40, 167, 69);
+    pdf.rect(0, 0, pageWidth, 30, 'F');
+    
+    // Title
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(18);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('DailyDrive Progress Report', pageWidth / 2, 20, { align: 'center' });
+    
+    // User Info & Stats in two columns
+    pdf.setTextColor(0, 0, 0);
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('User Information', 20, 45);
+    pdf.text('Statistics', 110, 45);
+    
+    pdf.setFontSize(9);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`Name: ${user.name}`, 20, 55);
+    pdf.text(`Email: ${user.email}`, 20, 62);
+    pdf.text(`Member Since: ${getUserSpecificData().memberSince}`, 20, 69);
+    
+    pdf.text(`Streak: ${getStreakDays()} days`, 110, 55);
+    pdf.text(`Activities: ${getTotalActivities()}`, 110, 62);
+    pdf.text(`Points: ${user.stats.totalPoints}`, 110, 69);
+    
+    // Course Progress Section
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Course Progress', 20, 85);
+    
+    let yPos = 95;
+    detailedCourses.forEach((course) => {
+      const progress = getCourseProgress(course.id, course.modules.length);
+      const completedModules = course.modules.filter(module => 
+        user?.completedModules?.[`${course.id}-${module.id}`]
+      ).length;
+      
+      // Course background
+      pdf.setFillColor(255, 255, 255);
+      pdf.rect(15, yPos - 3, pageWidth - 30, 20, 'F');
+      
+      pdf.setFontSize(10);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text(`${course.title}`, 20, yPos + 3);
+      
+      pdf.setFontSize(8);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`${course.category.toUpperCase()}`, 20, yPos + 10);
+      pdf.text(`${completedModules}/${course.modules.length} modules`, 70, yPos + 10);
+      pdf.text(`${progress}%`, 130, yPos + 10);
+      
+      // Progress bar
+      pdf.setFillColor(220, 220, 220);
+      pdf.rect(150, yPos + 7, 30, 3, 'F');
+      pdf.setFillColor(40, 167, 69);
+      pdf.rect(150, yPos + 7, (30 * progress) / 100, 3, 'F');
+      
+      yPos += 25;
+    });
+    
+    // Footer
+    pdf.setFontSize(8);
+    pdf.setTextColor(128, 128, 128);
+    pdf.text(`Generated on ${new Date().toLocaleDateString()}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+    
+    pdf.save(`${user.name.replace(/\s+/g, '_')}_DailyDrive_Progress.pdf`);
   };
 
   const getStreakDays = () => {
@@ -32,7 +101,7 @@ const Analytics = () => {
   };
 
   const getTotalActivities = () => {
-    return (user?.stats?.coursesCompleted || 0) + (user?.stats?.communityPosts || 0);
+    return getOverallProgress();
   };
 
   const getCompletionRate = () => {
@@ -61,15 +130,7 @@ const Analytics = () => {
     );
   }
 
-  const weeklyData = [
-    { day: 'Mon', fitness: 2, study: 3, wellness: 1 },
-    { day: 'Tue', fitness: 1, study: 4, wellness: 1 },
-    { day: 'Wed', fitness: 3, study: 2, wellness: 1 },
-    { day: 'Thu', fitness: 2, study: 3, wellness: 0 },
-    { day: 'Fri', fitness: 1, study: 5, wellness: 1 },
-    { day: 'Sat', fitness: 3, study: 1, wellness: 2 },
-    { day: 'Sun', fitness: 2, study: 2, wellness: 1 }
-  ];
+
 
   return (
     <div className="analytics">
@@ -86,24 +147,9 @@ const Analytics = () => {
           </div>
           
           <div className="header-controls">
-            <div className="period-selector">
-              {periods.map(period => (
-                <button
-                  key={period.id}
-                  className={`period-button ${selectedPeriod === period.id ? 'active' : ''}`}
-                  onClick={() => setSelectedPeriod(period.id)}
-                >
-                  {period.name}
-                </button>
-              ))}
-            </div>
-            
             <div className="export-buttons">
-              <Button variant="outline" size="small" onClick={() => exportData('pdf')}>
+              <Button variant="outline" size="small" onClick={exportToPDF}>
                 Export PDF
-              </Button>
-              <Button variant="outline" size="small" onClick={() => exportData('csv')}>
-                Export CSV
               </Button>
             </div>
           </div>
@@ -186,59 +232,7 @@ const Analytics = () => {
             </Card>
           </div>
 
-          {/* Right Column - Weekly Chart */}
-          <div className="analytics-section chart-section">
-            <Card className="weekly-chart">
-              <h3>Weekly Activity</h3>
-              <div className="chart-container">
-                <div className="chart">
-                  {weeklyData.map((day, index) => (
-                    <div key={index} className="chart-bar">
-                      <div className="bar-container" style={{ height: '100px' }}>
-                        <div 
-                          className="bar fitness" 
-                          style={{ 
-                            height: `${(day.fitness / 5) * 100}px`,
-                            backgroundColor: 'var(--primary-green)'
-                          }}
-                        />
-                        <div 
-                          className="bar study" 
-                          style={{ 
-                            height: `${(day.study / 5) * 100}px`,
-                            backgroundColor: 'var(--soft-blue)'
-                          }}
-                        />
-                        <div 
-                          className="bar wellness" 
-                          style={{ 
-                            height: `${(day.wellness / 5) * 100}px`,
-                            backgroundColor: 'var(--text-grey)'
-                          }}
-                        />
-                      </div>
-                      <span className="bar-label">{day.day}</span>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="chart-legend">
-                  <div className="legend-item">
-                    <div className="legend-color" style={{ backgroundColor: 'var(--primary-green)' }}></div>
-                    <span>Fitness</span>
-                  </div>
-                  <div className="legend-item">
-                    <div className="legend-color" style={{ backgroundColor: 'var(--soft-blue)' }}></div>
-                    <span>Study</span>
-                  </div>
-                  <div className="legend-item">
-                    <div className="legend-color" style={{ backgroundColor: 'var(--text-grey)' }}></div>
-                    <span>Wellness</span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
+
 
           {/* Bottom - Streak Tracker */}
           <div className="analytics-section streak-section">

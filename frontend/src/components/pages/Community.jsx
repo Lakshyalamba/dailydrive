@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import Card from '../common/Card';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import { useAuth } from '../../contexts/AuthContext';
 import { mockApi } from '../../utils/mockApi';
-import { currentUser } from '../../data/mockUsers';
 import './Community.css';
 
 const Community = () => {
+  const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('all');
@@ -43,12 +44,25 @@ const Community = () => {
 
   const handleCreatePost = async (e) => {
     e.preventDefault();
-    if (!newPost.title.trim() || !newPost.content.trim()) return;
+    if (!newPost.title.trim() || !newPost.content.trim() || !user) return;
 
     setSubmitting(true);
     try {
-      const response = await mockApi.createPost(newPost);
-      setPosts(prev => [response.data, ...prev]);
+      const postData = {
+        id: Date.now(),
+        title: newPost.title,
+        content: newPost.content,
+        category: newPost.category,
+        author: {
+          name: user.name,
+          avatar: user.profilePhoto || null
+        },
+        createdAt: 'Just now',
+        likes: 0,
+        comments: 0
+      };
+      
+      setPosts(prev => [postData, ...prev]);
       setNewPost({ title: '', content: '', category: 'general' });
       setShowCreatePost(false);
     } catch (error) {
@@ -68,6 +82,10 @@ const Community = () => {
 
   const handleJoinDiscussion = (postId) => {
     console.log('Joining discussion for post:', postId);
+  };
+
+  const handleDeletePost = (postId) => {
+    setPosts(prev => prev.filter(post => post.id !== postId));
   };
 
   if (loading) {
@@ -163,8 +181,8 @@ const Community = () => {
           <div className="community-main">
             {/* Create Post Modal */}
             {showCreatePost && (
-              <div className="modal-overlay" onClick={() => setShowCreatePost(false)}>
-                <Card className="create-post-modal" onClick={e => e.stopPropagation()}>
+              <div className="modal-overlay">
+                <Card className="create-post-modal">
                   <div className="modal-header">
                     <h3>Create New Post</h3>
                     <button 
@@ -175,7 +193,7 @@ const Community = () => {
                     </button>
                   </div>
                   
-                  <form onSubmit={handleCreatePost}>
+                  <form onSubmit={handleCreatePost} onClick={e => e.stopPropagation()}>
                     <Input
                       label="Title"
                       placeholder="What's on your mind?"
@@ -214,12 +232,19 @@ const Community = () => {
                       <Button 
                         type="button" 
                         variant="secondary"
-                        onClick={() => setShowCreatePost(false)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setShowCreatePost(false);
+                        }}
                       >
                         Cancel
                       </Button>
-                      <Button type="submit" loading={submitting}>
-                        Post
+                      <Button 
+                        type="submit" 
+                        loading={submitting}
+                        disabled={!newPost.title.trim() || !newPost.content.trim()}
+                      >
+                        {submitting ? 'Posting...' : 'Post'}
                       </Button>
                     </div>
                   </form>
@@ -253,10 +278,21 @@ const Community = () => {
                           <span className="post-date">{post.createdAt}</span>
                         </div>
                       </div>
-                      <div className="post-category">
-                        <span className={`category-badge ${post.category}`}>
-                          {post.category}
-                        </span>
+                      <div className="post-header-right">
+                        <div className="post-category">
+                          <span className={`category-badge ${post.category}`}>
+                            {post.category}
+                          </span>
+                        </div>
+                        {post.author.name === user?.name && (
+                          <button 
+                            className="delete-post-btn"
+                            onClick={() => handleDeletePost(post.id)}
+                            title="Delete post"
+                          >
+                            🗑️
+                          </button>
+                        )}
                       </div>
                     </div>
                     

@@ -280,6 +280,13 @@
   justify-content: center;
   font-weight: 600;
   border: 2px solid var(--primary-green);
+  overflow: hidden;
+}
+
+.author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .author-info h4 {
@@ -292,9 +299,37 @@
   color: var(--text-grey);
 }
 
+.post-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
 .post-category {
   display: flex;
   align-items: center;
+}
+
+.delete-post-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  font-size: 1rem;
+  color: var(--text-grey);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.delete-post-btn:hover {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  transform: scale(1.1);
 }
 
 .category-badge {

@@ -4,7 +4,8 @@
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/dashboardbg.jpg');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
+  background-attachment: scroll;
+  transform: translateZ(0);
 }
 
 .dashboard-loading {
@@ -112,14 +113,14 @@
 }
 
 .dashboard-grid .card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  transition: all var(--transition-normal);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
   position: relative;
   overflow: hidden;
   height: fit-content;
+  transform: translateZ(0);
 }
 
 .dashboard-grid .card::before {
@@ -135,8 +136,8 @@
 }
 
 .dashboard-grid .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px) translateZ(0);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
 }
 
 .dashboard-grid .card:hover::before {
@@ -166,8 +167,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.7);
   z-index: 1;
+  transform: translateZ(0);
 }
 
 .dashboard-category-progress > * {
@@ -390,5 +392,27 @@
   
   .dashboard-grid .card {
     padding: 1rem;
+  }
+}
+
+.dashboard-streak-message {
+  background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+  color: white;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

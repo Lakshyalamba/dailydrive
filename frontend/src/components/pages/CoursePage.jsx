@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import Card from '../common/Card';
 import Button from '../common/Button';
 import ProgressBar from '../common/ProgressBar';
+import { useAuth } from '../../contexts/AuthContext';
 import { mockApi } from '../../utils/mockApi';
 import { courses } from '../../data/mockCourses';
 import './CoursePage.css';
@@ -10,6 +11,7 @@ import './CoursePage.css';
 const CoursePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { getCourseProgress, isCourseUnlocked, unlockCourse } = useAuth();
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
@@ -76,13 +78,40 @@ const CoursePage = () => {
           </div>
           
           <div className="courses-grid">
-            {courses.map(course => (
+            {courses.map(course => {
+              const progress = getCourseProgress(course.id, course.modules || 8);
+              const isUnlocked = isCourseUnlocked(course.id);
+              return (
               <Card key={course.id} hover className="course-card" onClick={() => handleCourseClick(course.id)}>
                 <div className="course-thumbnail">
-                  <div className="placeholder-thumbnail">
-                    <div className={`category-icon ${course.category}`}></div>
+                  <div className={`placeholder-thumbnail ${!isUnlocked ? 'locked' : ''}`}>
+                    {!isUnlocked ? (
+                      <div className="lock-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6z"/>
+                        </svg>
+                      </div>
+                    ) : (
+                      <div className="category-visual">
+                        {course.category === 'fitness' && (
+                          <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29z"/>
+                          </svg>
+                        )}
+                        {course.category === 'study' && (
+                          <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                          </svg>
+                        )}
+                        {course.category === 'wellness' && (
+                          <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                          </svg>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  {course.progress > 0 && (
+                  {progress > 0 && isUnlocked && (
                     <div className="enrolled-badge">Enrolled</div>
                   )}
                 </div>
@@ -90,7 +119,12 @@ const CoursePage = () => {
                 <div className="course-content">
                   <div className="course-meta">
                     <span className="course-category">{course.category}</span>
-                    <span className="course-rating">★ {course.rating}</span>
+                    <div className="course-rating">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                      <span>{course.rating}</span>
+                    </div>
                   </div>
                   
                   <h3>{course.title}</h3>
@@ -109,9 +143,9 @@ const CoursePage = () => {
                     <span>{course.instructor.name}</span>
                   </div>
                   
-                  {course.progress > 0 && (
+                  {progress > 0 && (
                     <ProgressBar 
-                      progress={course.progress}
+                      progress={progress}
                       label="Your Progress"
                       size="small"
                     />
@@ -122,18 +156,31 @@ const CoursePage = () => {
                   <div className="course-price">
                     <span className="price free-badge">FREE</span>
                   </div>
-                  <Button 
-                    variant={course.progress > 0 ? 'outline' : 'primary'}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCourseClick(course.id);
-                    }}
-                  >
-                    {course.progress > 0 ? 'Continue' : 'View Course'}
-                  </Button>
+                  {!isUnlocked ? (
+                    <Button 
+                      variant="primary"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        unlockCourse(course.id);
+                      }}
+                    >
+                      Unlock Course
+                    </Button>
+                  ) : (
+                    <Button 
+                      variant={progress > 0 ? 'outline' : 'primary'}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCourseClick(course.id);
+                      }}
+                    >
+                      {progress > 0 ? 'Continue' : 'View Course'}
+                    </Button>
+                  )}
                 </div>
               </Card>
-            ))}
+            );
+            })}
           </div>
         </div>
       </div>
@@ -190,7 +237,10 @@ const CoursePage = () => {
                 </div>
                 {enrollmentSuccess && (
                   <div className="success-message">
-                    ✓ Successfully enrolled! You can now start learning.
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                    Successfully enrolled! You can now start learning.
                   </div>
                 )}
                 <Button 
@@ -208,7 +258,11 @@ const CoursePage = () => {
           <div className="course-preview">
             <div className="video-preview">
               <div className="video-placeholder">
-                <div className="play-button">▶</div>
+                <div className="play-button">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
                 <span>Course Preview</span>
               </div>
             </div>
@@ -298,7 +352,13 @@ const CoursePage = () => {
                   <h3>{course.instructor.name}</h3>
                   <p>{course.instructor.title}</p>
                   <div className="instructor-stats">
-                    <span>4.8 ★ Instructor Rating</span>
+                    <span>
+                      4.8 
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display: inline; margin: 0 4px;">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                      Instructor Rating
+                    </span>
                     <span>12,543 Students</span>
                     <span>8 Courses</span>
                   </div>
@@ -322,7 +382,13 @@ const CoursePage = () => {
                 <h3>Student Reviews</h3>
                 <div className="rating-summary">
                   <span className="rating-number">{course.rating}</span>
-                  <div className="rating-stars">★★★★★</div>
+                  <div className="rating-stars">
+                    {[1,2,3,4,5].map(i => (
+                      <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                    ))}
+                  </div>
                   <span>({course.enrolled} reviews)</span>
                 </div>
               </div>
@@ -336,7 +402,13 @@ const CoursePage = () => {
                       </div>
                       <div className="reviewer-info">
                         <h5>User {i}</h5>
-                        <div className="review-rating">★★★★★</div>
+                        <div className="review-rating">
+                          {[1,2,3,4,5].map(i => (
+                            <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                          ))}
+                        </div>
                       </div>
                       <span className="review-date">2 weeks ago</span>
                     </div>

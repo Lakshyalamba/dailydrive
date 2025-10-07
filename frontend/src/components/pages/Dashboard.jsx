@@ -9,8 +9,9 @@ import { courses } from '../../data/mockCourses';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { user, incrementStreak, getCourseProgress, isCourseUnlocked } = useAuth();
   const [loading, setLoading] = useState(true);
+  const [streakMessage, setStreakMessage] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -27,7 +28,10 @@ const Dashboard = () => {
     );
   }
 
-  const enrolledCourses = courses.filter(course => course.progress > 0).slice(0, 3);
+  const enrolledCourses = courses.map(course => ({
+    ...course,
+    progress: getCourseProgress(course.id, course.modules || 8)
+  })).filter(course => (course.progress > 0 || course.isEnrolled) && isCourseUnlocked(course.id)).slice(0, 3);
   const recentActivities = user.recentActivity;
   const goals = user.goals;
   
@@ -55,7 +59,23 @@ const Dashboard = () => {
           <Card className="dashboard-progress-overview">
             <div className="card-header">
               <h3>Today's Progress</h3>
+              <Button 
+                variant="primary" 
+                size="small" 
+                onClick={() => {
+                  incrementStreak();
+                  setStreakMessage('🔥 Streak increased! Great job!');
+                  setTimeout(() => setStreakMessage(''), 3000);
+                }}
+              >
+                Complete Day +1
+              </Button>
             </div>
+            {streakMessage && (
+              <div className="dashboard-streak-message">
+                {streakMessage}
+              </div>
+            )}
             <div className="dashboard-progress-categories">
               <div className="dashboard-category-progress fitness">
                 <div className="dashboard-category-header">

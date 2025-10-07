@@ -497,6 +497,48 @@
 .module-status {
   font-size: 1.25rem;
   color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.module-checkpoint {
+  background: none;
+  border: 2px solid #e5e7eb;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.module-checkpoint:hover {
+  border-color: var(--primary-green);
+  transform: scale(1.05);
+}
+
+.module-checkpoint.completed {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+}
+
+.module-checkpoint.completed:hover {
+  background-color: var(--error-red);
+  border-color: var(--error-red);
+}
+
+.checkpoint-icon {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #9ca3af;
+}
+
+.module-checkpoint.completed .checkpoint-icon {
+  color: white;
 }
 
 .expand-icon {

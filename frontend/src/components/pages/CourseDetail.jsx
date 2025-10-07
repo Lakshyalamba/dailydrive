@@ -13,7 +13,7 @@ import './CourseDetail.css';
 const CourseDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, toggleModuleCompletion, getCourseProgress, isCourseUnlocked } = useAuth();
   const [course, setCourse] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -28,11 +28,13 @@ const CourseDetail = () => {
     const courseData = detailedCourses.find(c => c.id === parseInt(id));
     if (courseData) {
       setCourse(courseData);
-      setIsEnrolled(courseData.isEnrolled);
-      setProgress(courseData.progress);
+      const isUnlocked = isCourseUnlocked(courseData.id);
+      setIsEnrolled(isUnlocked);
+      const calculatedProgress = getCourseProgress(courseData.id, courseData.modules.length);
+      setProgress(calculatedProgress);
     }
     setLoading(false);
-  }, [id]);
+  }, [id, user?.completedModules, user?.unlockedCourses, getCourseProgress, isCourseUnlocked]);
 
   const handleEnroll = () => {
     setIsEnrolled(true);
@@ -224,10 +226,24 @@ const CourseDetail = () => {
                   <div className="module-status">
                     {!isEnrolled ? (
                       <span className="lock-icon">🔒</span>
-                    ) : module.completed ? (
-                      <span className="check-icon">✅</span>
                     ) : (
-                      <span className="expand-icon">{expandedModule === module.id ? '▼' : '▶'}</span>
+                      <>
+                        <button 
+                          className={`module-checkpoint ${user?.completedModules?.[`${course.id}-${module.id}`] ? 'completed' : ''}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleModuleCompletion(course.id, module.id, 10);
+                            const newProgress = getCourseProgress(course.id, course.modules.length);
+                            setProgress(newProgress);
+                          }}
+                          title={user?.completedModules?.[`${course.id}-${module.id}`] ? 'Mark as incomplete' : 'Mark as complete'}
+                        >
+                          <div className="checkpoint-icon">
+                            {user?.completedModules?.[`${course.id}-${module.id}`] ? '✓' : '○'}
+                          </div>
+                        </button>
+                        <span className="expand-icon">{expandedModule === module.id ? '▼' : '▶'}</span>
+                      </>
                     )}
                   </div>
                 </div>

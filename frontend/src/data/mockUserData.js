@@ -100,6 +100,8 @@ export const mockUserProfiles = {
     joinDate: new Date().toISOString().split('T')[0],
     memberSince: 'March 2024',
     membershipType: 'Free',
+    completedModules: {},
+    unlockedCourses: [],
     stats: {
       coursesEnrolled: 0,
       coursesCompleted: 0,

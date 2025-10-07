@@ -2,12 +2,13 @@
   background-color: var(--white);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  transition: all var(--transition-fast);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  transform: translateZ(0);
 }
 
 .card-hover:hover {
   box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  transform: translateY(-1px) translateZ(0);
 }
 
 /* Padding variants */
@@ -28,6 +29,9 @@
   border-bottom: 1px solid var(--light-grey);
   padding-bottom: var(--spacing-sm);
   margin-bottom: var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card-header h3 {

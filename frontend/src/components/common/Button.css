@@ -3,13 +3,14 @@
   border-radius: var(--radius-md);
   cursor: pointer;
   font-weight: 500;
-  transition: all var(--transition-fast);
+  transition: transform var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-xs);
   text-decoration: none;
   font-family: inherit;
+  transform: translateZ(0);
 }
 
 .btn:disabled {
@@ -25,7 +26,7 @@
 
 .btn-primary:hover:not(:disabled) {
   background-color: var(--primary-green);
-  transform: translateY(-1px);
+  transform: translateY(-1px) translateZ(0);
   box-shadow: var(--shadow-md);
 }
 
