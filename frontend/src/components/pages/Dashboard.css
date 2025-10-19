@@ -1,11 +1,7 @@
 .dashboard-main {
   padding: 100px var(--spacing-md) var(--spacing-xl);
   min-height: 100vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/dashboardbg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: scroll;
-  transform: translateZ(0);
+  background: linear-gradient(135deg, #f8fffe 0%, #e8f5e8 100%);
 }
 
 .dashboard-loading {
@@ -153,64 +149,28 @@
 
 .dashboard-category-progress {
   padding: var(--spacing-md);
-  background-size: cover;
-  background-position: center;
   border-radius: var(--radius-md);
-  position: relative;
-  overflow: hidden;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border: 2px solid var(--light-grey);
+  transition: all var(--transition-fast);
 }
 
-.dashboard-category-progress::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 1;
-  transform: translateZ(0);
-}
-
-.dashboard-category-progress > * {
-  position: relative;
-  z-index: 2;
-  color: white !important;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
-  font-weight: 600;
-}
-
-.dashboard-category-progress .dashboard-category-name {
-  font-weight: 800;
-  font-size: 1.2rem;
-  color: white !important;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
-}
-
-.dashboard-category-progress .progress-bar {
-  background-color: rgba(255, 255, 255, 0.3) !important;
-}
-
-.dashboard-category-progress .progress-bar .progress-fill {
-  background-color: white !important;
-}
-
-.dashboard-category-progress .progress-label {
-  color: white !important;
-  font-weight: 600;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
+.dashboard-category-progress:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary-green);
 }
 
 .dashboard-category-progress.fitness {
-  background-image: url('/fitnessbg.jpg');
+  border-color: var(--primary-green);
 }
 
 .dashboard-category-progress.study {
-  background-image: url('/studybg.jpg');
+  border-color: var(--soft-blue);
 }
 
 .dashboard-category-progress.wellness {
-  background-image: url('/meditationbg.jpg');
+  border-color: var(--text-grey);
 }
 
 .dashboard-category-header {

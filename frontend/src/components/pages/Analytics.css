@@ -1,10 +1,7 @@
 .analytics {
   padding: 100px var(--spacing-md) var(--spacing-xl);
   min-height: 100vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/dashboardbg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  background: linear-gradient(135deg, #f8fffe 0%, #e8f5e8 100%);
 }
 
 .analytics-loading {
