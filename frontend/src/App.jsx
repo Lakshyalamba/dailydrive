@@ -4,6 +4,8 @@ import Navbar from './components/common/Navbar';
 import Landing from './components/pages/Landing';
 import Login from './components/pages/Login';
 import Signup from './components/pages/Signup';
+import ForgotPassword from './components/pages/ForgotPassword';
+import ResetPassword from './components/pages/ResetPassword';
 import Dashboard from './components/pages/Dashboard';
 import CoursePage from './components/pages/CoursePage';
 import CourseDetail from './components/pages/CourseDetail';
@@ -64,6 +66,12 @@ function AppContent() {
           } />
           <Route path="/signup" element={
             <PublicRoute><Signup /></PublicRoute>
+          } />
+          <Route path="/forgot-password" element={
+            <PublicRoute><ForgotPassword /></PublicRoute>
+          } />
+          <Route path="/reset-password" element={
+            <PublicRoute><ResetPassword /></PublicRoute>
           } />
           <Route path="/dashboard" element={
             <ProtectedRoute><Dashboard /></ProtectedRoute>

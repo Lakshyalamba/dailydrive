@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Button from '../common/Button';
 import Input from '../common/Input';
 import Card from '../common/Card';
@@ -8,12 +8,20 @@ import './Login.css';
 
 const Login = () => {
   const { login, loading } = useAuth();
+  const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (searchParams.get('reset') === 'success') {
+      setSuccessMessage('Password reset successful! Please login with your new password.');
+    }
+  }, [searchParams]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,6 +69,12 @@ const Login = () => {
               </div>
             )}
 
+            {successMessage && (
+              <div className="success-message">
+                {successMessage}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="login-form">
               <Input
                 type="email"
@@ -95,6 +109,11 @@ const Login = () => {
             </form>
 
             <div className="login-footer">
+              <div className="forgot-password">
+                <Link to="/forgot-password" className="forgot-link">
+                  Forgot Password?
+                </Link>
+              </div>
               <p>
                 Don't have an account?{' '}
                 <Link to="/register" className="register-link">
