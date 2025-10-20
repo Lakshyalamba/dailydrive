@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import Card from '../common/Card';
 import Button from '../common/Button';
 import ProgressBar from '../common/ProgressBar';
+import SkeletonLoader from '../common/SkeletonLoader';
 import { useAuth } from '../../contexts/AuthContext';
 import { mockApi } from '../../utils/mockApi';
 import { courses } from '../../data/mockCourses';
@@ -61,8 +62,14 @@ const CoursePage = () => {
 
   if (loading) {
     return (
-      <div className="course-loading">
-        <div className="spinner-large"></div>
+      <div className="courses-catalog">
+        <div className="container">
+          <div className="catalog-header">
+            <h1>Course Catalog</h1>
+            <p>Discover courses to accelerate your personal growth</p>
+          </div>
+          <SkeletonLoader type="course" count={6} />
+        </div>
       </div>
     );
   }

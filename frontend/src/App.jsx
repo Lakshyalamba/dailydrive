@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Navbar from './components/common/Navbar';
 import Landing from './components/pages/Landing';
@@ -13,6 +14,7 @@ import Community from './components/pages/Community';
 import Analytics from './components/pages/Analytics';
 import Profile from './components/pages/Profile';
 import './styles/global.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
@@ -88,6 +90,17 @@ function AppContent() {
           } />
         </Routes>
       </main>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }

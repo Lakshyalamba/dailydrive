@@ -4,6 +4,7 @@ import Card from '../common/Card';
 import Button from '../common/Button';
 import ProgressBar from '../common/ProgressBar';
 import WelcomeHeader from '../common/WelcomeHeader';
+import SkeletonLoader from '../common/SkeletonLoader';
 import { useAuth } from '../../contexts/AuthContext';
 import { courses } from '../../data/mockCourses';
 import './Dashboard.css';
@@ -43,8 +44,13 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="dashboard-loading">
-        <div className="dashboard-spinner-large"></div>
+      <div className="dashboard-main">
+        <div className="container">
+          <WelcomeHeader />
+          <div className="dashboard-grid dashboard-expanded">
+            <SkeletonLoader type="dashboard" count={6} />
+          </div>
+        </div>
       </div>
     );
   }

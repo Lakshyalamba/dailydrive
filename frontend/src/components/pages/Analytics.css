@@ -144,8 +144,46 @@
   opacity: 1;
 }
 
-/* Key Metrics */
+/* Key Metrics - Donut Chart */
 .metrics-overview {
+  width: 100%;
+}
+
+.donut-chart-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-center-text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.completion-percentage {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-green);
+  line-height: 1;
+}
+
+.completion-label {
+  font-size: 0.875rem;
+  color: var(--text-grey);
+  margin-top: var(--spacing-xs);
+}
+
+/* Time Chart */
+.time-chart-section {
+  order: 3;
+}
+
+.time-chart {
   width: 100%;
 }
 
@@ -562,6 +600,24 @@
     margin-bottom: 0;
   }
   
+  /* Donut chart responsive */
+  .donut-chart-container {
+    height: 180px;
+  }
+  
+  .completion-percentage {
+    font-size: 1.5rem;
+  }
+  
+  .completion-label {
+    font-size: 0.75rem;
+  }
+  
+  /* Time chart responsive */
+  .time-chart .recharts-wrapper {
+    height: 200px !important;
+  }
+  
   /* Metrics section - line by line */
   .metrics-grid {
     flex-direction: column;
@@ -840,6 +896,24 @@
   .analytics-main-grid .card {
     padding: 0.875rem;
     border-radius: 8px;
+  }
+  
+  /* Donut chart ultra compact */
+  .donut-chart-container {
+    height: 150px;
+  }
+  
+  .completion-percentage {
+    font-size: 1.25rem;
+  }
+  
+  .completion-label {
+    font-size: 0.6875rem;
+  }
+  
+  /* Time chart ultra compact */
+  .time-chart .recharts-wrapper {
+    height: 180px !important;
   }
   
   /* Metrics - ultra compact line by line */

@@ -6,6 +6,7 @@ import ProgressBar from '../common/ProgressBar';
 import Card from '../common/Card';
 import StudyTimer from '../common/StudyTimer';
 import MeditationPlayer from '../common/MeditationPlayer';
+import SkeletonLoader from '../common/SkeletonLoader';
 import { detailedCourses } from '../../data/mockDetailedCourses';
 import { courses } from '../../data/mockCourses';
 import './CourseDetail.css';
@@ -66,7 +67,18 @@ const CourseDetail = () => {
   const isMeditationCourse = course?.category === 'wellness' || course?.title?.toLowerCase().includes('meditation') || course?.title?.toLowerCase().includes('mindfulness');
 
   if (loading) {
-    return <div className="loading-spinner"><div className="spinner-large"></div></div>;
+    return (
+      <div className="course-detail">
+        <div className="container">
+          <div className="breadcrumb">
+            <Link to="/courses" className="breadcrumb-link">Courses</Link>
+            <span className="breadcrumb-separator">›</span>
+            <span className="breadcrumb-current">Loading...</span>
+          </div>
+          <SkeletonLoader type="dashboard" count={5} />
+        </div>
+      </div>
+    );
   }
 
   if (!course) {

@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import Card from '../common/Card';
 import Button from '../common/Button';
 import ProgressBar from '../common/ProgressBar';
+import SkeletonLoader from '../common/SkeletonLoader';
 import { useAuth } from '../../contexts/AuthContext';
 import { detailedCourses } from '../../data/mockDetailedCourses';
 import jsPDF from 'jspdf';
@@ -124,8 +126,23 @@ const Analytics = () => {
 
   if (loading || !user) {
     return (
-      <div className="analytics-loading">
-        <div className="spinner-large"></div>
+      <div className="analytics">
+        <div className="container">
+          <div className="analytics-header">
+            <div className="header-content">
+              <h1>Progress Analytics</h1>
+              <p>Track your journey and celebrate your achievements!</p>
+            </div>
+            <div className="header-controls">
+              <div className="export-buttons">
+                <Button variant="outline" size="small">Export PDF</Button>
+              </div>
+            </div>
+          </div>
+          <div className="analytics-main-grid">
+            <SkeletonLoader type="dashboard" count={4} />
+          </div>
+        </div>
       </div>
     );
   }
@@ -157,43 +174,55 @@ const Analytics = () => {
 
         {/* Analytics Main Grid Layout */}
         <div className="analytics-main-grid">
-          {/* Top Row - Key Metrics */}
+          {/* Top Row - Goal Completion Donut Chart */}
           <div className="analytics-section metrics-section">
             <Card className="metrics-overview">
-              <h3>Your Key Metrics</h3>
-              <div className="metrics-grid">
-                <div className="metric-item">
-                  <div className="metric-icon streak"></div>
-                  <div className="metric-content">
-                    <span className="metric-number">{getStreakDays()}</span>
-                    <span className="metric-label">Day Streak</span>
-                  </div>
-                </div>
-                
-                <div className="metric-item">
-                  <div className="metric-icon activities"></div>
-                  <div className="metric-content">
-                    <span className="metric-number">{getTotalActivities()}</span>
-                    <span className="metric-label">Total Activities</span>
-                  </div>
-                </div>
-                
-                <div className="metric-item">
-                  <div className="metric-icon completion"></div>
-                  <div className="metric-content">
-                    <span className="metric-number">{getCompletionRate()}%</span>
-                    <span className="metric-label">Goal Completion</span>
-                  </div>
-                </div>
-                
-                <div className="metric-item">
-                  <div className="metric-icon achievements"></div>
-                  <div className="metric-content">
-                    <span className="metric-number">{user.stats.coursesCompleted}</span>
-                    <span className="metric-label">Achievements</span>
-                  </div>
+              <h3>Goal Completion</h3>
+              <div className="donut-chart-container">
+                <ResponsiveContainer width="100%" height={200}>
+                  <PieChart>
+                    <Pie
+                      data={[
+                        { name: 'Completed', value: getCompletionRate(), fill: '#28a745' },
+                        { name: 'Remaining', value: 100 - getCompletionRate(), fill: '#e9ecef' }
+                      ]}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      dataKey="value"
+                    >
+                      <Cell fill="#28a745" />
+                      <Cell fill="#e9ecef" />
+                    </Pie>
+                    <Tooltip formatter={(value) => `${value}%`} />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="donut-center-text">
+                  <span className="completion-percentage">{getCompletionRate()}%</span>
+                  <span className="completion-label">Complete</span>
                 </div>
               </div>
+            </Card>
+          </div>
+
+          {/* Time Spent Bar Chart */}
+          <div className="analytics-section time-chart-section">
+            <Card className="time-chart">
+              <h3>Time Spent per Category (Last 7 Days)</h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <BarChart data={[
+                  { name: 'Fitness', hours: user.progress.fitness?.weeklyCompleted || 0 },
+                  { name: 'Study', hours: user.progress.study?.weeklyCompleted || 0 },
+                  { name: 'Wellness', hours: user.progress.wellness?.weeklyCompleted || 0 }
+                ]}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip formatter={(value) => [`${value} hours`, 'Time Spent']} />
+                  <Bar dataKey="hours" fill="#28a745" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
             </Card>
           </div>
 
@@ -234,21 +263,25 @@ const Analytics = () => {
 
 
 
-          {/* Bottom - Streak Tracker */}
+          {/* Bottom - Dynamic Streak Tracker */}
           <div className="analytics-section streak-section">
             <Card className="streak-tracker">
               <h3>Your Streak Tracker</h3>
               <div className="streak-calendar">
                 {Array.from({ length: 30 }, (_, i) => {
-                  const isActive = i < getStreakDays();
-                  const isToday = i === getStreakDays() - 1;
+                  const daysSinceStart = 30 - i;
+                  const isActive = daysSinceStart <= getStreakDays();
+                  const isToday = i === 29;
+                  const date = new Date();
+                  date.setDate(date.getDate() - daysSinceStart + 1);
                   
                   return (
                     <div 
                       key={i} 
                       className={`streak-day ${isActive ? 'active' : ''} ${isToday ? 'today' : ''}`}
+                      title={date.toDateString()}
                     >
-                      {i + 1}
+                      {date.getDate()}
                     </div>
                   );
                 })}
@@ -260,7 +293,7 @@ const Analytics = () => {
                   <span className="streak-label">Current Streak</span>
                 </div>
                 <div className="streak-stat">
-                  <span className="streak-number">23</span>
+                  <span className="streak-number">{Math.max(getStreakDays(), 23)}</span>
                   <span className="streak-label">Longest Streak</span>
                 </div>
               </div>

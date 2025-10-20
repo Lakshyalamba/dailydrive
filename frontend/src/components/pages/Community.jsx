@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import Card from '../common/Card';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import SkeletonLoader from '../common/SkeletonLoader';
 import { useAuth } from '../../contexts/AuthContext';
 import { mockApi } from '../../utils/mockApi';
 import './Community.css';
@@ -65,6 +67,7 @@ const Community = () => {
       setPosts(prev => [postData, ...prev]);
       setNewPost({ title: '', content: '', category: 'general' });
       setShowCreatePost(false);
+      toast.success('Post created successfully!');
     } catch (error) {
       console.error('Error creating post:', error);
     } finally {
@@ -90,8 +93,27 @@ const Community = () => {
 
   if (loading) {
     return (
-      <div className="community-loading">
-        <div className="spinner-large"></div>
+      <div className="community">
+        <div className="container">
+          <div className="community-header">
+            <div className="header-content">
+              <h1>Community</h1>
+              <p>Connect, share, and grow together with fellow learners</p>
+            </div>
+            <Button>Create Post</Button>
+          </div>
+          <div className="community-layout">
+            <div className="community-sidebar">
+              <Card className="categories-card">
+                <h3>Categories</h3>
+                <SkeletonLoader type="dashboard" count={1} />
+              </Card>
+            </div>
+            <div className="community-main">
+              <SkeletonLoader type="post" count={4} />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
