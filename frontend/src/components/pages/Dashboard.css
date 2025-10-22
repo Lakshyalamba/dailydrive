@@ -103,9 +103,46 @@
 }
 
 .dashboard-progress-overview,
+.dashboard-goal-chart,
+.dashboard-time-chart,
 .dashboard-my-courses,
 .dashboard-goals-section {
   grid-column: 1;
+}
+
+/* Chart Components */
+.dashboard-goal-chart,
+.dashboard-time-chart {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.donut-chart-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donut-center-text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.completion-percentage {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-green);
+  line-height: 1;
+}
+
+.completion-label {
+  font-size: 0.875rem;
+  color: var(--text-grey);
+  margin-top: var(--spacing-xs);
 }
 
 .dashboard-grid .card {
@@ -192,32 +229,53 @@
   gap: var(--spacing-md);
 }
 
-.dashboard-course-item {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
-  background-color: var(--light-grey);
-  border-radius: var(--radius-md);
+.dashboard-course-card {
+  padding: var(--spacing-lg);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all var(--transition-fast);
 }
 
-.dashboard-course-info {
-  flex: 1;
+.dashboard-course-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.dashboard-course-info h4 {
+.course-card-header {
+  margin-bottom: var(--spacing-md);
+}
+
+.course-card-header h4 {
   margin-bottom: var(--spacing-xs);
   color: #333;
+  font-size: 1.125rem;
+  font-weight: 600;
 }
 
-.dashboard-course-info p {
-  margin-bottom: 0;
+.course-instructor {
   font-size: 0.875rem;
+  color: var(--text-grey);
+  font-weight: 500;
 }
 
-.dashboard-course-progress {
-  flex: 1;
-  max-width: 150px;
+.course-card-progress {
+  margin-bottom: var(--spacing-lg);
+}
+
+.progress-text {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--primary-green);
+  font-weight: 600;
+  margin-top: var(--spacing-xs);
+}
+
+.continue-btn {
+  width: 100%;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 /* Goals */
@@ -312,14 +370,36 @@
     gap: 1rem;
   }
   
-  .dashboard-course-item, .dashboard-goal-item {
+  .dashboard-course-card {
+    padding: 1rem;
+  }
+  
+  .continue-btn {
+    font-size: 0.75rem;
+    padding: 0.75rem;
+  }
+  
+  .dashboard-goal-item {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
   }
   
-  .dashboard-course-progress, .dashboard-goal-progress {
+  .dashboard-goal-progress {
     max-width: none;
+  }
+  
+  /* Chart responsive */
+  .donut-chart-container {
+    height: 180px;
+  }
+  
+  .completion-percentage {
+    font-size: 1.5rem;
+  }
+  
+  .completion-label {
+    font-size: 0.75rem;
   }
 }
 
@@ -352,6 +432,19 @@
   
   .dashboard-grid .card {
     padding: 1rem;
+  }
+  
+  /* Chart ultra compact */
+  .donut-chart-container {
+    height: 150px;
+  }
+  
+  .completion-percentage {
+    font-size: 1.25rem;
+  }
+  
+  .completion-label {
+    font-size: 0.6875rem;
   }
 }
 

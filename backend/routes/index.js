@@ -6,6 +6,7 @@ import { getAllCourses, enrollCourse, getUserCourses, updateCourseProgress } fro
 import { getAllPosts, createPost, likePost, getSinglePost } from '../controllers/communityController.js';
 import { getUserGoals, createGoal, updateGoal, deleteGoal } from '../controllers/goalsController.js';
 import { getWeeklyAnalytics, getMonthlyAnalytics, getYearlyAnalytics, getStreakData, exportToPDF, exportToCSV } from '../controllers/analyticsController.js';
+import { getDailyTasks, createTask, updateTask } from '../controllers/dailyFocusController.js';
 
 const router = express.Router();
 
@@ -43,5 +44,10 @@ router.get('/analytics/:userId/yearly', verifyToken, getYearlyAnalytics);
 router.get('/analytics/:userId/streak', verifyToken, getStreakData);
 router.get('/analytics/:userId/export/pdf', verifyToken, exportToPDF);
 router.get('/analytics/:userId/export/csv', verifyToken, exportToCSV);
+
+// Daily Focus routes
+router.get('/daily-focus/:userId', verifyToken, getDailyTasks);
+router.post('/daily-focus', verifyToken, createTask);
+router.put('/daily-focus/:id', verifyToken, updateTask);
 
 export default router;

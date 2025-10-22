@@ -63,7 +63,7 @@ const CourseDetail = () => {
     }
   };
 
-  const isStudyCourse = course?.category === 'study' || course?.title?.toLowerCase().includes('study');
+  const isStudyCourse = (course?.category === 'study' || course?.title?.toLowerCase().includes('study')) && course?.id !== 5;
   const isMeditationCourse = course?.category === 'wellness' || course?.title?.toLowerCase().includes('meditation') || course?.title?.toLowerCase().includes('mindfulness');
 
   if (loading) {

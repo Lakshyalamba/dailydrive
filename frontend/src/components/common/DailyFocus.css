@@ -1,0 +1,40 @@
+.daily-focus-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.daily-focus-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--light-grey);
+  border-radius: var(--radius-md);
+}
+
+.task-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary-green);
+}
+
+.task-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 0.875rem;
+  padding: var(--spacing-xs);
+}
+
+.task-input:focus {
+  outline: none;
+  background-color: var(--white);
+  border-radius: var(--radius-sm);
+}
