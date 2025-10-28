@@ -16,6 +16,11 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('✅ Backend is live and running!');
+});
+
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
