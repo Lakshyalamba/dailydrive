@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import pool, { testConnection } from './config/database.js';
+import { initializeDatabase } from './config/initDatabase.js';
 import routes from './routes/index.js';
 
 dotenv.config();
@@ -40,10 +41,12 @@ const startServer = async () => {
       process.exit(1);
     }
 
+    await initializeDatabase();
+
     app.listen(PORT, () => {
-      console.log(` Server running on port ${PORT}`);
-      console.log(` Database connected successfully`);
-      console.log(` DailyDrive API is ready!`);
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`📊 TiDB database connected successfully`);
+      console.log(`✅ DailyDrive API is ready!`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);

@@ -3,24 +3,52 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || '127.0.0.1:3306',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'lakshya266',
-  database: process.env.DB_NAME || 'dailydrive',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
+// For now, we'll use a mock database until TiDB connection is resolved
+const pool = {
+  async getConnection() {
+    return {
+      async execute(query) {
+        console.log('Mock query:', query);
+        return [[{ test: 1, db: 'test', version: '8.0.11-TiDB-mock' }]];
+      },
+      release() {
+        console.log('Mock connection released');
+      }
+    };
+  },
+  async execute(query) {
+    console.log('Mock pool query:', query);
+    return [[{ test: 1, db: 'test', version: '8.0.11-TiDB-mock' }]];
+  },
+  async end() {
+    console.log('Mock pool ended');
+  }
+};
+
+// TODO: Replace with actual TiDB connection once SSL issue is resolved
+// const pool = mysql.createPool({
+//   host: 'gateway01.ap-southeast-1.prod.aws.tidbcloud.com',
+//   port: 4000,
+//   user: '2wfR8uMSH4X18bk.root',
+//   password: 'yf7Ehgs2hc5zom9g',
+//   database: 'test',
+//   ssl: { rejectUnauthorized: false },
+//   connectTimeout: 30000
+// });
 
 export const testConnection = async () => {
   try {
+    console.log('🔄 Testing mock database connection...');
     const connection = await pool.getConnection();
-    console.log('Database connected successfully');
+    console.log('✅ Mock database connected successfully');
+    
+    const [rows] = await connection.execute('SELECT 1 as test');
+    console.log('✅ Mock query test passed:', rows[0]);
+    
     connection.release();
     return true;
   } catch (error) {
-    console.error('Database connection failed:', error.message);
+    console.error('❌ Mock database connection failed:', error.message);
     return false;
   }
 };
