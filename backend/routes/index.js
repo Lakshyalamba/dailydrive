@@ -10,6 +10,10 @@ import { getDailyTasks, createTask, updateTask } from '../controllers/dailyFocus
 
 const router = express.Router();
 
+router.get('/test', (req, res) => {
+    res.send('🧠 Router working fine!');
+  });
+  
 // Authentication routes
 router.post('/auth/register', register);
 router.post('/auth/login', login);
