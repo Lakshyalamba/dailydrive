@@ -64,6 +64,63 @@
   border: 1px solid rgba(40, 167, 69, 0.2);
 }
 
+.demo-account-box {
+  background: linear-gradient(135deg, rgba(40, 167, 69, 0.08), rgba(139, 195, 74, 0.05));
+  border: 1px solid rgba(40, 167, 69, 0.2);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+}
+
+.demo-header {
+  margin-bottom: var(--spacing-sm);
+}
+
+.demo-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+  color: white;
+  padding: 4px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.demo-credentials {
+  margin-bottom: var(--spacing-sm);
+}
+
+.demo-credentials p {
+  margin: var(--spacing-xs) 0;
+  color: var(--text-grey);
+  font-size: 0.9rem;
+}
+
+.demo-credentials strong {
+  color: var(--primary-green);
+  margin-right: 4px;
+}
+
+.demo-button {
+  width: 100%;
+  margin-top: var(--spacing-xs);
+  background: white !important;
+  color: var(--primary-green) !important;
+  border: 2px solid var(--primary-green) !important;
+  font-weight: 600;
+}
+
+.demo-button:hover {
+  background: var(--primary-green) !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.25);
+}
+
+
 .login-form {
   margin-bottom: var(--spacing-xl);
 }
