@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FaCamera } from 'react-icons/fa';
 import { useAuth } from '../../contexts/AuthContext';
 import Card from '../common/Card';
 import Button from '../common/Button';
@@ -72,7 +73,7 @@ const Profile = () => {
                   </div>
                 )}
                 <label htmlFor="photo-upload" className="avatar-upload-btn">
-                  <span>📷</span>
+                  <span><FaCamera /></span>
                 </label>
                 <input
                   id="photo-upload"
@@ -111,9 +112,9 @@ const Profile = () => {
                 disabled
               />
 
-              <Button 
-                type="submit" 
-                size="large" 
+              <Button
+                type="submit"
+                size="large"
                 loading={loading}
                 className="save-button"
               >

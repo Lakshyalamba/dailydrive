@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FaStar } from 'react-icons/fa';
 import Button from '../common/Button';
 import Card from '../common/Card';
 import { mockApi } from '../../utils/mockApi';
@@ -199,7 +200,7 @@ const Landing = () => {
                     </div>
                   </div>
                   <div className="landing-testimonial-rating">
-                    {'★'.repeat(testimonial.rating)}
+                    {Array.from({ length: testimonial.rating }).map((_, i) => <FaStar key={i} />)}
                   </div>
                 </div>
               </Card>

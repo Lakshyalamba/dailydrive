@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { FaBook, FaCoffee } from 'react-icons/fa';
 import Button from './Button';
 import './StudyTimer.css';
 
@@ -38,7 +39,7 @@ const StudyTimer = ({ onSessionComplete }) => {
   const handleSessionEnd = () => {
     setIsActive(false);
     setSessions(prev => prev + 1);
-    
+
     if (sessionType === 'study') {
       setSessionType('break');
       setTime(5 * 60); // 5 minute break
@@ -78,7 +79,7 @@ const StudyTimer = ({ onSessionComplete }) => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const progress = sessionType === 'study' 
+  const progress = sessionType === 'study'
     ? ((25 * 60 - time) / (25 * 60)) * 100
     : ((5 * 60 - time) / (5 * 60)) * 100;
 
@@ -88,7 +89,7 @@ const StudyTimer = ({ onSessionComplete }) => {
         <h3>Study Timer</h3>
         <div className="session-info">
           <span className={`session-type ${sessionType}`}>
-            {sessionType === 'study' ? '📚 Study Session' : '☕ Break Time'}
+            {sessionType === 'study' ? <><FaBook /> Study Session</> : <><FaCoffee /> Break Time</>}
           </span>
           <span className="session-count">Sessions: {sessions}</span>
         </div>

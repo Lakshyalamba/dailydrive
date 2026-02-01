@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { FaFire } from 'react-icons/fa';
 import Card from '../common/Card';
 import Button from '../common/Button';
 import ProgressBar from '../common/ProgressBar';
@@ -37,13 +38,13 @@ const Dashboard = () => {
     .filter(course => course.isEnrolled || getCourseProgress(course.id, course.modules.length) > 0)
     .map(course => {
       const progress = getCourseProgress(course.id, course.modules.length);
-      const completedModules = course.modules.filter((_, index) => 
+      const completedModules = course.modules.filter((_, index) =>
         user?.completedModules?.[`${course.id}-${index + 1}`]
       );
-      const nextModule = course.modules.find((_, index) => 
+      const nextModule = course.modules.find((_, index) =>
         !user?.completedModules?.[`${course.id}-${index + 1}`]
       ) || course.modules[course.modules.length - 1];
-      
+
       return {
         ...course,
         progress,
@@ -53,13 +54,13 @@ const Dashboard = () => {
     .slice(0, 3);
   const recentActivities = user.recentActivity;
   const goals = user.goals;
-  
+
   const getCompletionRate = () => {
     const totalGoals = goals.length;
     const completedGoals = goals.filter(goal => goal.current >= goal.target).length;
     return totalGoals > 0 ? Math.round((completedGoals / totalGoals) * 100) : 0;
   };
-  
+
   const notifications = [
     { id: 1, type: 'reminder', message: `Keep up your ${user.stats.streakDays}-day streak!`, time: '10 min ago' },
     { id: 2, type: 'achievement', message: `You've completed ${user.stats.coursesCompleted} courses!`, time: '1 hour ago' },
@@ -89,12 +90,12 @@ const Dashboard = () => {
           <Card className="dashboard-progress-overview">
             <div className="card-header">
               <h3>Today's Progress</h3>
-              <Button 
-                variant="primary" 
-                size="small" 
+              <Button
+                variant="primary"
+                size="small"
                 onClick={() => {
                   incrementStreak();
-                  setStreakMessage('🔥 Streak increased! Great job!');
+                  setStreakMessage(<><FaFire /> Streak increased! Great job!</>);
                   setTimeout(() => setStreakMessage(''), 3000);
                 }}
               >
@@ -111,7 +112,7 @@ const Dashboard = () => {
                 <div className="dashboard-category-header">
                   <span className="dashboard-category-name">Fitness</span>
                 </div>
-                <ProgressBar 
+                <ProgressBar
                   progress={user.progress.fitness.weeklyCompleted}
                   max={user.progress.fitness.weeklyGoal}
                   label={`${user.progress.fitness.weeklyCompleted}/${user.progress.fitness.weeklyGoal} workouts`}
@@ -121,7 +122,7 @@ const Dashboard = () => {
                 <div className="dashboard-category-header">
                   <span className="dashboard-category-name">Study</span>
                 </div>
-                <ProgressBar 
+                <ProgressBar
                   progress={user.progress.study.weeklyCompleted}
                   max={user.progress.study.weeklyGoal}
                   label={`${user.progress.study.weeklyCompleted}/${user.progress.study.weeklyGoal} hours`}
@@ -131,7 +132,7 @@ const Dashboard = () => {
                 <div className="dashboard-category-header">
                   <span className="dashboard-category-name">Wellness</span>
                 </div>
-                <ProgressBar 
+                <ProgressBar
                   progress={user.progress.wellness.weeklyCompleted}
                   max={user.progress.wellness.weeklyGoal}
                   label={`${user.progress.wellness.weeklyCompleted}/${user.progress.wellness.weeklyGoal} sessions`}
@@ -207,7 +208,7 @@ const Dashboard = () => {
                     <span className="course-instructor">{course.instructor.name}</span>
                   </div>
                   <div className="course-card-progress">
-                    <ProgressBar 
+                    <ProgressBar
                       progress={course.progress}
                       showPercentage={true}
                       size="small"
@@ -238,7 +239,7 @@ const Dashboard = () => {
                     <p>Category: {goal.category}</p>
                   </div>
                   <div className="dashboard-goal-progress">
-                    <ProgressBar 
+                    <ProgressBar
                       progress={goal.current}
                       max={goal.target}
                       label={`${goal.current}/${goal.target}`}

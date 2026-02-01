@@ -64,21 +64,21 @@ export const achievements = [
     id: 1,
     title: "First Week Complete",
     description: "Completed your first week of activities",
-    icon: "🎯",
+    icon: "FaBullseye",
     unlockedAt: "2024-01-08"
   },
   {
     id: 2,
     title: "Fitness Enthusiast",
     description: "Completed 25 fitness sessions",
-    icon: "💪",
+    icon: "FaDumbbell",
     unlockedAt: "2024-01-15"
   },
   {
     id: 3,
     title: "Study Master",
     description: "Studied for 100 hours",
-    icon: "📚",
+    icon: "FaBook",
     unlockedAt: "2024-01-18"
   }
 ];

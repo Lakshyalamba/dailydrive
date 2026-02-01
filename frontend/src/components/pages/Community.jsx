@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { FaClipboardList, FaDumbbell, FaBook, FaSpa, FaComments, FaPencilAlt, FaTrash, FaThumbsUp, FaComment } from 'react-icons/fa';
 import Card from '../common/Card';
 import Button from '../common/Button';
 import Input from '../common/Input';
@@ -18,11 +19,11 @@ const Community = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const categories = [
-    { id: 'all', name: 'All Posts', icon: '📋' },
-    { id: 'fitness', name: 'Fitness', icon: '💪' },
-    { id: 'study', name: 'Study', icon: '📚' },
-    { id: 'wellness', name: 'Wellness', icon: '🧘' },
-    { id: 'general', name: 'General', icon: '💬' }
+    { id: 'all', name: 'All Posts', icon: <FaClipboardList /> },
+    { id: 'fitness', name: 'Fitness', icon: <FaDumbbell /> },
+    { id: 'study', name: 'Study', icon: <FaBook /> },
+    { id: 'wellness', name: 'Wellness', icon: <FaSpa /> },
+    { id: 'general', name: 'General', icon: <FaComments /> }
   ];
 
   useEffect(() => {
@@ -40,8 +41,8 @@ const Community = () => {
     loadPosts();
   }, []);
 
-  const filteredPosts = activeCategory === 'all' 
-    ? posts 
+  const filteredPosts = activeCategory === 'all'
+    ? posts
     : posts.filter(post => post.category === activeCategory);
 
   const handleCreatePost = async (e) => {
@@ -63,7 +64,7 @@ const Community = () => {
         likes: 0,
         comments: 0
       };
-      
+
       setPosts(prev => [postData, ...prev]);
       setNewPost({ title: '', content: '', category: 'general' });
       setShowCreatePost(false);
@@ -76,8 +77,8 @@ const Community = () => {
   };
 
   const handleLike = (postId) => {
-    setPosts(prev => prev.map(post => 
-      post.id === postId 
+    setPosts(prev => prev.map(post =>
+      post.id === postId
         ? { ...post, likes: post.likes + 1 }
         : post
     ));
@@ -172,7 +173,7 @@ const Community = () => {
               <h3>Active Groups</h3>
               <div className="groups-list">
                 <div className="group-item">
-                  <div className="group-avatar">💪</div>
+                  <div className="group-avatar"><FaDumbbell /></div>
                   <div className="group-info">
                     <h4>Fitness Warriors</h4>
                     <p>1.2K members</p>
@@ -180,7 +181,7 @@ const Community = () => {
                   <Button variant="outline" size="small">Join</Button>
                 </div>
                 <div className="group-item">
-                  <div className="group-avatar">📚</div>
+                  <div className="group-avatar"><FaBook /></div>
                   <div className="group-info">
                     <h4>Study Buddies</h4>
                     <p>890 members</p>
@@ -188,7 +189,7 @@ const Community = () => {
                   <Button variant="outline" size="small">Join</Button>
                 </div>
                 <div className="group-item">
-                  <div className="group-avatar">🧘</div>
+                  <div className="group-avatar"><FaSpa /></div>
                   <div className="group-info">
                     <h4>Mindful Living</h4>
                     <p>654 members</p>
@@ -207,14 +208,14 @@ const Community = () => {
                 <Card className="create-post-modal">
                   <div className="modal-header">
                     <h3>Create New Post</h3>
-                    <button 
+                    <button
                       className="modal-close"
                       onClick={() => setShowCreatePost(false)}
                     >
                       ×
                     </button>
                   </div>
-                  
+
                   <form onSubmit={handleCreatePost} onClick={e => e.stopPropagation()}>
                     <Input
                       label="Title"
@@ -223,10 +224,10 @@ const Community = () => {
                       onChange={(e) => setNewPost(prev => ({ ...prev, title: e.target.value }))}
                       required
                     />
-                    
+
                     <div className="input-group">
                       <label className="input-label">Category</label>
-                      <select 
+                      <select
                         className="input"
                         value={newPost.category}
                         onChange={(e) => setNewPost(prev => ({ ...prev, category: e.target.value }))}
@@ -237,7 +238,7 @@ const Community = () => {
                         <option value="wellness">Wellness</option>
                       </select>
                     </div>
-                    
+
                     <div className="input-group">
                       <label className="input-label">Content</label>
                       <textarea
@@ -249,10 +250,10 @@ const Community = () => {
                         required
                       />
                     </div>
-                    
+
                     <div className="modal-actions">
-                      <Button 
-                        type="button" 
+                      <Button
+                        type="button"
                         variant="secondary"
                         onClick={(e) => {
                           e.preventDefault();
@@ -261,8 +262,8 @@ const Community = () => {
                       >
                         Cancel
                       </Button>
-                      <Button 
-                        type="submit" 
+                      <Button
+                        type="submit"
                         loading={submitting}
                         disabled={!newPost.title.trim() || !newPost.content.trim()}
                       >
@@ -279,7 +280,7 @@ const Community = () => {
               {filteredPosts.length === 0 ? (
                 <Card className="empty-state">
                   <div className="empty-content">
-                    <div className="empty-icon">📝</div>
+                    <div className="empty-icon"><FaPencilAlt /></div>
                     <h3>No posts yet</h3>
                     <p>Be the first to start a conversation in this category!</p>
                     <Button onClick={() => setShowCreatePost(true)}>
@@ -307,41 +308,41 @@ const Community = () => {
                           </span>
                         </div>
                         {post.author.name === user?.name && (
-                          <button 
+                          <button
                             className="delete-post-btn"
                             onClick={() => handleDeletePost(post.id)}
                             title="Delete post"
                           >
-                            🗑️
+                            <FaTrash />
                           </button>
                         )}
                       </div>
                     </div>
-                    
+
                     <div className="post-content">
                       <h3>{post.title}</h3>
                       <p>{post.content}</p>
                     </div>
-                    
+
                     <div className="post-actions">
-                      <button 
+                      <button
                         className="action-button like"
                         onClick={() => handleLike(post.id)}
                       >
-                        <span className="action-icon">👍</span>
+                        <span className="action-icon"><FaThumbsUp /></span>
                         <span>{post.likes}</span>
                       </button>
-                      
-                      <button 
+
+                      <button
                         className="action-button comment"
                         onClick={() => handleJoinDiscussion(post.id)}
                       >
-                        <span className="action-icon">💬</span>
+                        <span className="action-icon"><FaComment /></span>
                         <span>{post.comments}</span>
                       </button>
-                      
-                      <Button 
-                        variant="outline" 
+
+                      <Button
+                        variant="outline"
                         size="small"
                         onClick={() => handleJoinDiscussion(post.id)}
                       >

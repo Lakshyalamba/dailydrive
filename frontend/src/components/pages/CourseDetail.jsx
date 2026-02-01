@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { FaClock, FaBook, FaChartBar, FaUsers, FaBullseye, FaSpa, FaFileAlt, FaLock, FaChevronDown, FaChevronRight, FaStar } from 'react-icons/fa';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../common/Button';
 import ProgressBar from '../common/ProgressBar';
@@ -105,34 +106,34 @@ const CourseDetail = () => {
               <span className={`category-badge ${course.category}`}>{course.category}</span>
               <span className="difficulty-badge">{course.difficulty}</span>
             </div>
-            
+
             <h1 className="course-title">{course.title}</h1>
             <p className="course-description">{course.description}</p>
-            
+
             <div className="course-info-cards">
               <div className="info-card">
-                <span className="info-icon">⏱️</span>
+                <span className="info-icon"><FaClock /></span>
                 <div className="info-content">
                   <span className="info-label">Duration</span>
                   <span className="info-value">{course.duration}</span>
                 </div>
               </div>
               <div className="info-card">
-                <span className="info-icon">📚</span>
+                <span className="info-icon"><FaBook /></span>
                 <div className="info-content">
                   <span className="info-label">Modules</span>
                   <span className="info-value">{course.modules.length}</span>
                 </div>
               </div>
               <div className="info-card">
-                <span className="info-icon">📊</span>
+                <span className="info-icon"><FaChartBar /></span>
                 <div className="info-content">
                   <span className="info-label">Difficulty</span>
                   <span className="info-value">{course.difficulty}</span>
                 </div>
               </div>
               <div className="info-card">
-                <span className="info-icon">👥</span>
+                <span className="info-icon"><FaUsers /></span>
                 <div className="info-content">
                   <span className="info-label">Students</span>
                   <span className="info-value">{course.enrolledCount.toLocaleString()}</span>
@@ -175,9 +176,9 @@ const CourseDetail = () => {
           <Card className="study-timer-section">
             <div className="timer-header-controls">
               <h3>Study Timer</h3>
-              <Button 
-                variant="outline" 
-                size="small" 
+              <Button
+                variant="outline"
+                size="small"
                 onClick={() => setShowTimer(!showTimer)}
               >
                 {showTimer ? 'Hide Timer' : 'Show Timer'}
@@ -188,8 +189,8 @@ const CourseDetail = () => {
             )}
             {studySessions > 0 && (
               <div className="study-stats">
-                <p>🎯 Study sessions completed: <strong>{studySessions}</strong></p>
-                <p>⏱️ Total study time: <strong>{studySessions * 25} minutes</strong></p>
+                <p><FaBullseye /> Study sessions completed: <strong>{studySessions}</strong></p>
+                <p><FaClock /> Total study time: <strong>{studySessions * 25} minutes</strong></p>
               </div>
             )}
           </Card>
@@ -200,9 +201,9 @@ const CourseDetail = () => {
           <Card className="meditation-player-section">
             <div className="meditation-header-controls">
               <h3>Guided Meditation</h3>
-              <Button 
-                variant="outline" 
-                size="small" 
+              <Button
+                variant="outline"
+                size="small"
                 onClick={() => setShowMeditation(!showMeditation)}
               >
                 {showMeditation ? 'Hide Meditation' : 'Show Meditation'}
@@ -213,8 +214,8 @@ const CourseDetail = () => {
             )}
             {meditationSessions > 0 && (
               <div className="meditation-stats">
-                <p>🧘 Meditation sessions completed: <strong>{meditationSessions}</strong></p>
-                <p>⏱️ Total meditation time: <strong>{meditationSessions * 10} minutes</strong></p>
+                <p><FaSpa /> Meditation sessions completed: <strong>{meditationSessions}</strong></p>
+                <p><FaClock /> Total meditation time: <strong>{meditationSessions * 10} minutes</strong></p>
               </div>
             )}
           </Card>
@@ -231,16 +232,16 @@ const CourseDetail = () => {
                   <div className="module-content">
                     <h4>{module.title}</h4>
                     <div className="module-meta">
-                      <span>⏱️ {module.duration}</span>
-                      <span>📝 {module.lessons} lessons</span>
+                      <span><FaClock /> {module.duration}</span>
+                      <span><FaFileAlt /> {module.lessons} lessons</span>
                     </div>
                   </div>
                   <div className="module-status">
                     {!isEnrolled ? (
-                      <span className="lock-icon">🔒</span>
+                      <span className="lock-icon"><FaLock /></span>
                     ) : (
                       <>
-                        <button 
+                        <button
                           className={`module-checkpoint ${user?.completedModules?.[`${course.id}-${module.id}`] ? 'completed' : ''}`}
                           onClick={(e) => {
                             e.stopPropagation();
@@ -254,7 +255,7 @@ const CourseDetail = () => {
                             {user?.completedModules?.[`${course.id}-${module.id}`] ? '✓' : '○'}
                           </div>
                         </button>
-                        <span className="expand-icon">{expandedModule === module.id ? '▼' : '▶'}</span>
+                        <span className="expand-icon">{expandedModule === module.id ? <FaChevronDown /> : <FaChevronRight />}</span>
                       </>
                     )}
                   </div>
@@ -329,10 +330,10 @@ const CourseDetail = () => {
               <h4>{course.instructor.name}</h4>
               <p className="instructor-title">{course.instructor.title}</p>
               <div className="instructor-rating">
-                <span>⭐ {course.instructor.rating} instructor rating</span>
+                <span><FaStar /> {course.instructor.rating} instructor rating</span>
               </div>
               <p className="instructor-bio">
-                {course.instructor.name} is a certified expert in {course.category} with over 10 years of experience 
+                {course.instructor.name} is a certified expert in {course.category} with over 10 years of experience
                 helping people achieve their personal development goals.
               </p>
             </div>
@@ -352,7 +353,7 @@ const CourseDetail = () => {
                   <div className="related-course-info">
                     <h5>{relatedCourse.title}</h5>
                     <p>{relatedCourse.modules} modules • {relatedCourse.duration}</p>
-                    <span className="related-course-rating">⭐ {relatedCourse.rating}</span>
+                    <span className="related-course-rating"><FaStar /> {relatedCourse.rating}</span>
                   </div>
                 </div>
               ))}

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { FaTree, FaWater, FaCloudRain, FaVolumeMute, FaSpa } from 'react-icons/fa';
 import Button from './Button';
 import './MeditationPlayer.css';
 
@@ -19,10 +20,10 @@ const MeditationPlayer = ({ onSessionComplete }) => {
   ];
 
   const backgroundSounds = [
-    { id: 'nature', name: '🌿 Forest Sounds', icon: '🌲' },
-    { id: 'ocean', name: '🌊 Ocean Waves', icon: '🌊' },
-    { id: 'rain', name: '🌧️ Gentle Rain', icon: '☔' },
-    { id: 'silence', name: '🔇 Silence', icon: '🤫' }
+    { id: 'nature', name: 'Forest Sounds', icon: <FaTree /> },
+    { id: 'ocean', name: 'Ocean Waves', icon: <FaWater /> },
+    { id: 'rain', name: 'Gentle Rain', icon: <FaCloudRain /> },
+    { id: 'silence', name: 'Silence', icon: <FaVolumeMute /> }
   ];
 
   const guidedInstructions = {
@@ -105,7 +106,7 @@ const MeditationPlayer = ({ onSessionComplete }) => {
       <div className="meditation-header">
         <h3>Guided Meditation</h3>
         <div className="session-info">
-          <span className="meditation-type">🧘 {meditationGuides.find(g => g.id === selectedGuide)?.name}</span>
+          <span className="meditation-type"><FaSpa /> {meditationGuides.find(g => g.id === selectedGuide)?.name}</span>
           <span className="session-duration">{formatTime(duration - currentTime)} remaining</span>
         </div>
       </div>
@@ -171,7 +172,7 @@ const MeditationPlayer = ({ onSessionComplete }) => {
               onClick={() => setBackgroundSound(sound.id)}
             >
               <span className="sound-icon">{sound.icon}</span>
-              <span className="sound-name">{sound.name.split(' ').slice(1).join(' ')}</span>
+              <span className="sound-name">{sound.name}</span>
             </button>
           ))}
         </div>
