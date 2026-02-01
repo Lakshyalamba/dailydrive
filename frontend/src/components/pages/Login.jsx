@@ -40,7 +40,7 @@ const Login = () => {
   const handleDemoLogin = () => {
     setFormData({
       email: 'dailydrive@gmail.com',
-      password: 'happydrive'
+      password: 'happydaily'
     });
     setErrors({});
   };
@@ -77,7 +77,7 @@ const Login = () => {
               </div>
               <div className="demo-credentials">
                 <p><strong>Email:</strong> dailydrive@gmail.com</p>
-                <p><strong>Password:</strong> happydrive</p>
+                <p><strong>Password:</strong> happydaily</p>
               </div>
               <Button
                 type="button"
