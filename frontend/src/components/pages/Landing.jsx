@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FaStar } from 'react-icons/fa';
 import Button from '../common/Button';
@@ -6,10 +6,80 @@ import Card from '../common/Card';
 import { mockApi } from '../../utils/mockApi';
 import './Landing.css';
 
+// Custom hook for counting animation
+const useCountUp = (end, duration = 2000, shouldStart = false) => {
+  const [count, setCount] = useState(0);
+  const countRef = useRef(0);
+
+  useEffect(() => {
+    if (!shouldStart || !end) return;
+
+    const startTime = Date.now();
+    const endValue = typeof end === 'number' ? end : parseInt(end.toString().replace(/,/g, ''));
+
+    const timer = setInterval(() => {
+      const now = Date.now();
+      const progress = Math.min((now - startTime) / duration, 1);
+
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentCount = Math.floor(easeOutQuart * endValue);
+
+      countRef.current = currentCount;
+      setCount(currentCount);
+
+      if (progress === 1) {
+        clearInterval(timer);
+        setCount(endValue);
+      }
+    }, 16);
+
+    return () => clearInterval(timer);
+  }, [end, duration, shouldStart]);
+
+  return count;
+};
+
+// Custom hook for scroll-triggered animations
+const useScrollAnimation = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const elementRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => {
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current);
+      }
+    };
+  }, []);
+
+  return [elementRef, isVisible];
+};
+
 const Landing = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [stats, setStats] = useState({});
   const [openFaq, setOpenFaq] = useState(null);
+  const [statsRef, statsVisible] = useScrollAnimation();
+
+  // Counter animations for stats
+  const activeUsersCount = useCountUp(stats.totalUsers, 2000, statsVisible);
+  const coursesCompletedCount = useCountUp(stats.coursesCompleted, 2000, statsVisible);
+  const communityPostsCount = useCountUp(stats.communityPosts, 2000, statsVisible);
+  const successRateCount = useCountUp(stats.successRate, 2000, statsVisible);
 
   useEffect(() => {
     const loadData = async () => {
@@ -50,39 +120,57 @@ const Landing = () => {
     <div className="landing-page">
       {/* Hero Section */}
       <section className="landing-hero">
+        <div className="landing-hero-animated-bg"></div>
         <div className="container">
           <div className="landing-hero-content">
-            <h1>Empower Your Daily Growth</h1>
-            <p className="landing-hero-subtitle">A smarter way to achieve your goals</p>
-            <p className="landing-hero-description">
-              Transform your life with our comprehensive self-improvement platform covering fitness,
-              study schedules, free courses, and community support.
+            <h1 className="landing-hero-title">Transform Your Team's Potential</h1>
+            <p className="landing-hero-subtitle">
+              Boost Productivity • Enhance Skills • Build Community
             </p>
-            <Link to="/register">
-              <Button size="large">Get Started</Button>
-            </Link>
+            <p className="landing-hero-description">
+              Empower your organization with our comprehensive employee development platform.
+              Combining fitness programs, skill-building courses, and collaborative learning
+              to drive engagement and performance.
+            </p>
+            <div className="landing-hero-cta">
+              <Link to="/register">
+                <Button size="large" className="hero-primary-btn">Start Free Trial</Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="landing-stats-section">
+      <section className="landing-stats-section" ref={statsRef}>
         <div className="container">
           <div className="landing-stats-grid">
-            <div className="landing-stat-item">
-              <h3>{stats.totalUsers?.toLocaleString()}</h3>
+            <div className={`landing-stat-item ${statsVisible ? 'animate-in' : ''}`}>
+              <div className="stat-header">
+                <span className="stat-pulse"></span>
+                <h3>{activeUsersCount.toLocaleString()}+</h3>
+              </div>
               <p>Active Users</p>
             </div>
-            <div className="landing-stat-item">
-              <h3>{stats.coursesCompleted?.toLocaleString()}</h3>
+            <div className={`landing-stat-item ${statsVisible ? 'animate-in' : ''}`}>
+              <div className="stat-header">
+                <span className="stat-pulse"></span>
+                <h3>{coursesCompletedCount.toLocaleString()}+</h3>
+              </div>
               <p>Courses Completed</p>
             </div>
-            <div className="landing-stat-item">
-              <h3>{stats.communityPosts?.toLocaleString()}</h3>
+            <div className={`landing-stat-item ${statsVisible ? 'animate-in' : ''}`}>
+              <div className="stat-header">
+                <span className="stat-pulse"></span>
+                <h3>{communityPostsCount.toLocaleString()}+</h3>
+              </div>
               <p>Community Posts</p>
             </div>
-            <div className="landing-stat-item">
-              <h3>{stats.successRate}%</h3>
+            <div className={`landing-stat-item ${statsVisible ? 'animate-in' : ''}`}>
+              <div className="stat-header">
+                <span className="stat-pulse"></span>
+                <h3>{successRateCount}%</h3>
+              </div>
               <p>Success Rate</p>
             </div>
           </div>
