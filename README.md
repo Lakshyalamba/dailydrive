@@ -90,7 +90,7 @@ DailyDrive is a modern HR-focused self-improvement platform designed to empower 
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/dailydrive.git
+   git clone https://github.com/Lakshyalamba/dailydrive.git
    cd dailydrive
    ```
 
@@ -133,8 +133,7 @@ DailyDrive is a modern HR-focused self-improvement platform designed to empower 
    ```
 
 4. **Access the Application**
-   - Frontend: http://localhost:5173
-   - Backend: http://localhost:5001
+   - Frontend: https://dailydrive-anfy.vercel.app/
 
 ## 📁 Project Structure
 
