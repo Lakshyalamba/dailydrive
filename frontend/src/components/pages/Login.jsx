@@ -37,14 +37,6 @@ const Login = () => {
     }
   };
 
-  const handleDemoLogin = () => {
-    setFormData({
-      email: 'dailydrive@gmail.com',
-      password: 'happydrive'
-    });
-    setErrors({});
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -69,25 +61,6 @@ const Login = () => {
             <div className="login-header">
               <h2>Welcome Back</h2>
               <p>Sign in to your DailyDrive account</p>
-            </div>
-
-            <div className="demo-account-box">
-              <div className="demo-header">
-                <span className="demo-badge">Demo Account</span>
-              </div>
-              <div className="demo-credentials">
-                <p><strong>Email:</strong> dailydrive@gmail.com</p>
-                <p><strong>Password:</strong> happydrive</p>
-              </div>
-              <Button
-                type="button"
-                variant="secondary"
-                size="small"
-                onClick={handleDemoLogin}
-                className="demo-button"
-              >
-                Use Demo Account
-              </Button>
             </div>
 
             {errors.general && (
