@@ -8,13 +8,14 @@ const generateToken = (userId) => {
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
+  const username = name?.trim();
 
-  if (!name || !email || !password) {
+  if (!username || !email || !password) {
     return res.status(400).json({ error: 'Name, email and password are required' });
   }
 
   try {
-    const [existing] = await pool.execute('SELECT id FROM users WHERE email = ?', [email]);
+    const { rows: existing } = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
     
     if (existing.length > 0) {
       return res.status(400).json({ error: 'User already exists' });
@@ -22,18 +23,19 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    const [result] = await pool.execute(
-      'INSERT INTO users (name, email, password, created_at) VALUES (?, ?, ?, NOW())',
-      [name, email, hashedPassword]
+    const { rows: resultRows } = await pool.query(
+      'INSERT INTO users (username, email, password_hash, created_at) VALUES ($1, $2, $3, NOW()) RETURNING id',
+      [username, email, hashedPassword]
     );
 
-    const token = generateToken(result.insertId);
+    const token = generateToken(resultRows[0].id);
     
     res.status(201).json({
-      user: { id: result.insertId, name, email },
+      user: { id: resultRows[0].id, name: username, email },
       token
     });
   } catch (error) {
+    console.error('Registration failed:', error.message);
     res.status(500).json({ error: 'Registration failed' });
   }
 };
@@ -46,36 +48,37 @@ export const login = async (req, res) => {
   }
 
   try {
-    const [users] = await pool.execute('SELECT * FROM users WHERE email = ?', [email]);
+    const { rows: users } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     
     if (users.length === 0) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
     const user = users[0];
-    const isValidPassword = await bcrypt.compare(password, user.password);
+    const isValidPassword = await bcrypt.compare(password, user.password_hash);
     
     if (!isValidPassword) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    await pool.execute('UPDATE users SET last_login = NOW() WHERE id = ?', [user.id]);
+    await pool.query('UPDATE users SET last_login = NOW() WHERE id = $1', [user.id]);
     
     const token = generateToken(user.id);
     
     res.json({
-      user: { id: user.id, name: user.name, email: user.email },
+      user: { id: user.id, name: user.username, email: user.email },
       token
     });
   } catch (error) {
+    console.error('Login failed:', error.message);
     res.status(500).json({ error: 'Login failed' });
   }
 };
 
 export const getProfile = async (req, res) => {
   try {
-    const [users] = await pool.execute(
-      'SELECT id, name, email, created_at, last_login FROM users WHERE id = ?',
+    const { rows: users } = await pool.query(
+      'SELECT id, username as name, email, created_at, last_login FROM users WHERE id = $1',
       [req.user.id]
     );
     
@@ -85,6 +88,7 @@ export const getProfile = async (req, res) => {
 
     res.json({ user: users[0] });
   } catch (error) {
+    console.error('Failed to get profile:', error.message);
     res.status(500).json({ error: 'Failed to get profile' });
   }
 };
