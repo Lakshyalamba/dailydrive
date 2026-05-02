@@ -9,10 +9,26 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+const defaultAllowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://dailydrive-anfy.vercel.app'
+];
+const envAllowedOrigins = (process.env.CORS_ORIGINS || process.env.FRONTEND_URL || '')
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);
+const allowedOrigins = [...new Set([...defaultAllowedOrigins, ...envAllowedOrigins])];
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173', 'https://dailydrive-anfy.vercel.app'],
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`CORS blocked origin: ${origin}`));
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -50,7 +66,8 @@ const startServer = async () => {
 
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`📊 TiDB database connected successfully`);
+      console.log(`📊 PostgreSQL database connected successfully`);
+      console.log(`🌐 CORS allowed origins: ${allowedOrigins.join(', ')}`);
       console.log(`✅ DailyDrive API is ready!`);
     });
   } catch (error) {
