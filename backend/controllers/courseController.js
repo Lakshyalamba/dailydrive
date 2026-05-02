@@ -2,7 +2,7 @@ import pool from '../config/database.js';
 
 export const getAllCourses = async (req, res) => {
   try {
-    const [courses] = await pool.execute(
+    const { rows: courses } = await pool.query(
       'SELECT id, title, description, category FROM courses ORDER BY id'
     );
     
@@ -18,8 +18,8 @@ export const enrollCourse = async (req, res) => {
 
   try {
     // Check if already enrolled
-    const [existing] = await pool.execute(
-      'SELECT id FROM user_courses WHERE user_id = ? AND course_id = ?',
+    const { rows: existing } = await pool.query(
+      'SELECT id FROM user_courses WHERE user_id = $1 AND course_id = $2',
       [userId, courseId]
     );
 
@@ -28,8 +28,8 @@ export const enrollCourse = async (req, res) => {
     }
 
     // Check if course exists
-    const [course] = await pool.execute(
-      'SELECT id, title FROM courses WHERE id = ?',
+    const { rows: course } = await pool.query(
+      'SELECT id, title FROM courses WHERE id = $1',
       [courseId]
     );
 
@@ -38,8 +38,8 @@ export const enrollCourse = async (req, res) => {
     }
 
     // Create enrollment
-    await pool.execute(
-      'INSERT INTO user_courses (user_id, course_id, progress, enrolled_at) VALUES (?, ?, 0, NOW())',
+    await pool.query(
+      'INSERT INTO user_courses (user_id, course_id, progress, enrolled_at) VALUES ($1, $2, 0, NOW())',
       [userId, courseId]
     );
 
@@ -57,8 +57,8 @@ export const getUserCourses = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const [courses] = await pool.execute(
-      'SELECT c.id, c.title, c.description, c.category, uc.progress, uc.enrolled_at FROM user_courses uc JOIN courses c ON uc.course_id = c.id WHERE uc.user_id = ? ORDER BY uc.enrolled_at DESC',
+    const { rows: courses } = await pool.query(
+      'SELECT c.id, c.title, c.description, c.category, uc.progress, uc.enrolled_at FROM user_courses uc JOIN courses c ON uc.course_id = c.id WHERE uc.user_id = $1 ORDER BY uc.enrolled_at DESC',
       [userId]
     );
 
@@ -78,12 +78,12 @@ export const updateCourseProgress = async (req, res) => {
   }
 
   try {
-    const [result] = await pool.execute(
-      'UPDATE user_courses SET progress = ? WHERE user_id = ? AND course_id = ?',
+    const result = await pool.query(
+      'UPDATE user_courses SET progress = $1 WHERE user_id = $2 AND course_id = $3',
       [progress, userId, courseId]
     );
 
-    if (result.affectedRows === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Enrollment not found' });
     }
 
