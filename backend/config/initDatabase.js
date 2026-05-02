@@ -19,7 +19,7 @@ export const initializeDatabase = async () => {
     
     for (const statement of statements) {
       if (statement.trim()) {
-        await pool.execute(statement);
+        await pool.query(statement);
       }
     }
     

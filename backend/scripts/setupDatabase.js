@@ -1,4 +1,4 @@
-import mysql from 'mysql2/promise';
+// Removed mysql import
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
@@ -10,22 +10,21 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 const setupDatabase = async () => {
-    let connection;
+    let client;
 
     try {
-        console.log('🔄 Connecting to TiDB database...');
+        console.log('🔄 Connecting to PostgreSQL database...');
 
-        connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            port: parseInt(process.env.DB_PORT),
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
+        const { Client } = await import('pg');
+        client = new Client({
+            connectionString: process.env.DATABASE_URL || `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
             ssl: { rejectUnauthorized: false },
-            connectTimeout: 30000
+            connectionTimeoutMillis: 30000
         });
 
-        console.log('✅ Connected to TiDB database');
+        await client.connect();
+
+        console.log('✅ Connected to PostgreSQL database');
 
         // Read and execute users table creation
         const usersTableSQL = fs.readFileSync(
@@ -34,19 +33,20 @@ const setupDatabase = async () => {
         );
 
         console.log('🔄 Creating users table...');
-        await connection.execute(usersTableSQL);
+        // Execute might contain multiple statements, query handles it
+        await client.query(usersTableSQL);
         console.log('✅ Users table created successfully');
 
         // Check if table was created
-        const [tables] = await connection.execute('SHOW TABLES');
-        console.log('📋 Available tables:', tables);
+        const { rows } = await client.query("SELECT tablename FROM pg_tables WHERE schemaname = 'public'");
+        console.log('📋 Available tables:', rows);
 
-        await connection.end();
+        await client.end();
         console.log('✅ Database setup completed successfully!');
         process.exit(0);
     } catch (error) {
         console.error('❌ Database setup failed:', error.message);
-        if (connection) await connection.end();
+        if (client) await client.end();
         process.exit(1);
     }
 };
