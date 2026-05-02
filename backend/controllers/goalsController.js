@@ -4,8 +4,8 @@ export const getUserGoals = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const [goals] = await pool.execute(
-      'SELECT id, goal_title, category, target_value, current_value, deadline, is_completed, created_at FROM user_goals WHERE user_id = ? ORDER BY created_at DESC',
+    const { rows: goals } = await pool.query(
+      'SELECT id, goal_title, category, target_value, current_value, deadline, is_completed, created_at FROM user_goals WHERE user_id = $1 ORDER BY created_at DESC',
       [userId]
     );
 
@@ -37,14 +37,14 @@ export const createGoal = async (req, res) => {
   }
 
   try {
-    const [result] = await pool.execute(
-      'INSERT INTO user_goals (user_id, goal_title, category, target_value, current_value, deadline, is_completed, created_at) VALUES (?, ?, ?, ?, 0, ?, FALSE, NOW())',
+    const { rows: result } = await pool.query(
+      'INSERT INTO user_goals (user_id, goal_title, category, target_value, current_value, deadline, is_completed, created_at) VALUES ($1, $2, $3, $4, 0, $5, FALSE, NOW()) RETURNING id',
       [userId, goal_title, category, target_value, deadline]
     );
 
-    const [newGoal] = await pool.execute(
-      'SELECT id, goal_title, category, target_value, current_value, deadline, is_completed, created_at FROM user_goals WHERE id = ?',
-      [result.insertId]
+    const { rows: newGoal } = await pool.query(
+      'SELECT id, goal_title, category, target_value, current_value, deadline, is_completed, created_at FROM user_goals WHERE id = $1',
+      [result[0].id]
     );
 
     res.status(201).json({
@@ -69,8 +69,8 @@ export const updateGoal = async (req, res) => {
   }
 
   try {
-    const [goals] = await pool.execute(
-      'SELECT target_value FROM user_goals WHERE id = ? AND user_id = ?',
+    const { rows: goals } = await pool.query(
+      'SELECT target_value FROM user_goals WHERE id = $1 AND user_id = $2',
       [goalId, userId]
     );
 
@@ -80,13 +80,13 @@ export const updateGoal = async (req, res) => {
 
     const isCompleted = current_value >= goals[0].target_value;
 
-    const [result] = await pool.execute(
-      'UPDATE user_goals SET current_value = ?, is_completed = ? WHERE id = ? AND user_id = ?',
+    await pool.query(
+      'UPDATE user_goals SET current_value = $1, is_completed = $2 WHERE id = $3 AND user_id = $4',
       [current_value, isCompleted, goalId, userId]
     );
 
-    const [updatedGoal] = await pool.execute(
-      'SELECT id, goal_title, category, target_value, current_value, deadline, is_completed, created_at FROM user_goals WHERE id = ?',
+    const { rows: updatedGoal } = await pool.query(
+      'SELECT id, goal_title, category, target_value, current_value, deadline, is_completed, created_at FROM user_goals WHERE id = $1',
       [goalId]
     );
 
@@ -107,12 +107,12 @@ export const deleteGoal = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    const [result] = await pool.execute(
-      'DELETE FROM user_goals WHERE id = ? AND user_id = ?',
+    const result = await pool.query(
+      'DELETE FROM user_goals WHERE id = $1 AND user_id = $2',
       [goalId, userId]
     );
 
-    if (result.affectedRows === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Goal not found' });
     }
 
