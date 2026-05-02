@@ -1,35 +1,30 @@
-import mysql from 'mysql2/promise';
+import pg from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-// TiDB Cloud database connection
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  port: parseInt(process.env.DB_PORT),
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+// PostgreSQL (Neon) database connection
+const { Pool } = pg;
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL || `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`,
   ssl: { rejectUnauthorized: false },
-  connectTimeout: 30000,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+  connectionTimeoutMillis: 30000,
+  max: 10
 });
 
 export const testConnection = async () => {
   try {
-    console.log('🔄 Testing TiDB database connection...');
-    const connection = await pool.getConnection();
-    console.log('✅ TiDB database connected successfully');
+    console.log('🔄 Testing PostgreSQL database connection...');
+    const client = await pool.connect();
+    console.log('✅ PostgreSQL database connected successfully');
 
-    const [rows] = await connection.execute('SELECT 1 as test, DATABASE() as db, VERSION() as version');
-    console.log('✅ Database query test passed:', rows[0]);
+    const result = await client.query('SELECT 1 as test, current_database() as db, version() as version');
+    console.log('✅ Database query test passed:', result.rows[0]);
 
-    connection.release();
+    client.release();
     return true;
   } catch (error) {
-    console.error('❌ TiDB database connection failed:', error.message);
+    console.error('❌ PostgreSQL database connection failed:', error.message);
     return false;
   }
 };
