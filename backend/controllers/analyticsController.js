@@ -8,17 +8,17 @@ export const getWeeklyAnalytics = async (req, res) => {
   const userId = req.user.id;
   
   try {
-    const [activities] = await pool.execute(
+    const { rows: activities } = await pool.query(
       `SELECT date, category, SUM(duration_minutes) as total_minutes 
        FROM user_activities 
-       WHERE user_id = ? AND date >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)
+       WHERE user_id = $1 AND date >= CURRENT_DATE - INTERVAL '7 days'
        GROUP BY date, category
        ORDER BY date DESC`,
       [userId]
     );
 
-    const [users] = await pool.execute(
-      'SELECT current_streak FROM users WHERE id = ?',
+    const { rows: users } = await pool.query(
+      'SELECT streak_days as current_streak FROM users WHERE id = $1',
       [userId]
     );
 
@@ -49,17 +49,17 @@ export const getMonthlyAnalytics = async (req, res) => {
   const userId = req.user.id;
   
   try {
-    const [activities] = await pool.execute(
+    const { rows: activities } = await pool.query(
       `SELECT category, COUNT(*) as total_activities, SUM(duration_minutes) as total_minutes
        FROM user_activities 
-       WHERE user_id = ? AND MONTH(date) = MONTH(CURDATE()) AND YEAR(date) = YEAR(CURDATE())
+       WHERE user_id = $1 AND EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM CURRENT_DATE) AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)
        GROUP BY category`,
       [userId]
     );
 
-    const [goals] = await pool.execute(
+    const { rows: goals } = await pool.query(
       `SELECT COUNT(*) as achieved_goals FROM user_goals 
-       WHERE user_id = ? AND is_completed = TRUE AND MONTH(created_at) = MONTH(CURDATE()) AND YEAR(created_at) = YEAR(CURDATE())`,
+       WHERE user_id = $1 AND is_completed = TRUE AND EXTRACT(MONTH FROM created_at) = EXTRACT(MONTH FROM CURRENT_DATE) AND EXTRACT(YEAR FROM created_at) = EXTRACT(YEAR FROM CURRENT_DATE)`,
       [userId]
     );
 
@@ -87,24 +87,24 @@ export const getYearlyAnalytics = async (req, res) => {
   const userId = req.user.id;
   
   try {
-    const [monthlyTrends] = await pool.execute(
-      `SELECT MONTH(date) as month, category, COUNT(*) as activities, SUM(duration_minutes) as minutes
+    const { rows: monthlyTrends } = await pool.query(
+      `SELECT EXTRACT(MONTH FROM date) as month, category, COUNT(*) as activities, SUM(duration_minutes) as minutes
        FROM user_activities 
-       WHERE user_id = ? AND YEAR(date) = YEAR(CURDATE())
-       GROUP BY MONTH(date), category
+       WHERE user_id = $1 AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)
+       GROUP BY EXTRACT(MONTH FROM date), category
        ORDER BY month`,
       [userId]
     );
 
-    const [totalStats] = await pool.execute(
+    const { rows: totalStats } = await pool.query(
       `SELECT COUNT(*) as total_activities, SUM(duration_minutes) as total_minutes
        FROM user_activities 
-       WHERE user_id = ? AND YEAR(date) = YEAR(CURDATE())`,
+       WHERE user_id = $1 AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)`,
       [userId]
     );
 
-    const [maxStreak] = await pool.execute(
-      'SELECT current_streak as longest_streak FROM users WHERE id = ?',
+    const { rows: maxStreak } = await pool.query(
+      'SELECT streak_days as longest_streak FROM users WHERE id = $1',
       [userId]
     );
 
@@ -123,15 +123,15 @@ export const getStreakData = async (req, res) => {
   const userId = req.user.id;
   
   try {
-    const [activities] = await pool.execute(
+    const { rows: activities } = await pool.query(
       `SELECT DISTINCT date as activity_date
        FROM user_activities 
-       WHERE user_id = ? AND MONTH(date) = MONTH(CURDATE()) AND YEAR(date) = YEAR(CURDATE())`,
+       WHERE user_id = $1 AND EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM CURRENT_DATE) AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM CURRENT_DATE)`,
       [userId]
     );
 
-    const [users] = await pool.execute(
-      'SELECT current_streak FROM users WHERE id = ?',
+    const { rows: users } = await pool.query(
+      'SELECT streak_days as current_streak FROM users WHERE id = $1',
       [userId]
     );
 
@@ -161,9 +161,9 @@ export const exportToPDF = async (req, res) => {
   const userId = req.user.id;
   
   try {
-    const [user] = await pool.execute('SELECT name FROM users WHERE id = ?', [userId]);
-    const [activities] = await pool.execute(
-      'SELECT category, COUNT(*) as count, SUM(duration_minutes) as minutes FROM user_activities WHERE user_id = ? GROUP BY category',
+    const { rows: user } = await pool.query('SELECT name FROM users WHERE id = $1', [userId]);
+    const { rows: activities } = await pool.query(
+      'SELECT category, COUNT(*) as count, SUM(duration_minutes) as minutes FROM user_activities WHERE user_id = $1 GROUP BY category',
       [userId]
     );
 
@@ -195,8 +195,8 @@ export const exportToCSV = async (req, res) => {
   const userId = req.user.id;
   
   try {
-    const [activities] = await pool.execute(
-      'SELECT date, category, activity_type, duration_minutes, points_earned as points FROM user_activities WHERE user_id = ? ORDER BY date DESC',
+    const { rows: activities } = await pool.query(
+      'SELECT date, category, activity_type, duration_minutes, points_earned as points FROM user_activities WHERE user_id = $1 ORDER BY date DESC',
       [userId]
     );
 
