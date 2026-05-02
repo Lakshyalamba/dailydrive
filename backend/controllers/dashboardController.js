@@ -6,32 +6,32 @@ export const getDashboardData = async (req, res) => {
 
   try {
     // Get user streak
-    const [streaks] = await pool.execute(
-      'SELECT current_streak FROM user_streaks WHERE user_id = ?',
+    const { rows: streaks } = await pool.query(
+      'SELECT current_streak FROM user_streaks WHERE user_id = $1',
       [userId]
     );
 
     // Get user points
-    const [users] = await pool.execute(
-      'SELECT total_points FROM users WHERE id = ?',
+    const { rows: users } = await pool.query(
+      'SELECT total_points FROM users WHERE id = $1',
       [userId]
     );
 
     // Get today's activities by category
-    const [activities] = await pool.execute(
-      'SELECT category, COUNT(*) as count, SUM(duration_minutes) as total_minutes FROM user_activities WHERE user_id = ? AND DATE(created_at) = ? GROUP BY category',
+    const { rows: activities } = await pool.query(
+      'SELECT category, COUNT(*) as count, SUM(duration_minutes) as total_minutes FROM user_activities WHERE user_id = $1 AND DATE(created_at) = $2 GROUP BY category',
       [userId, today]
     );
 
     // Get enrolled courses with progress
-    const [courses] = await pool.execute(
-      'SELECT c.id, c.title, c.category, uc.progress FROM user_courses uc JOIN courses c ON uc.course_id = c.id WHERE uc.user_id = ?',
+    const { rows: courses } = await pool.query(
+      'SELECT c.id, c.title, c.category, uc.progress FROM user_courses uc JOIN courses c ON uc.course_id = c.id WHERE uc.user_id = $1',
       [userId]
     );
 
     // Get current goals
-    const [goals] = await pool.execute(
-      'SELECT id, name, category, target_value, current_value FROM user_goals WHERE user_id = ? AND completed = FALSE',
+    const { rows: goals } = await pool.query(
+      'SELECT id, name, category, target_value, current_value FROM user_goals WHERE user_id = $1 AND is_completed = FALSE',
       [userId]
     );
 
@@ -75,39 +75,39 @@ export const addActivity = async (req, res) => {
 
   try {
     // Check if first activity today
-    const [todayActivities] = await pool.execute(
-      'SELECT COUNT(*) as count FROM user_activities WHERE user_id = ? AND DATE(created_at) = ?',
+    const { rows: todayActivities } = await pool.query(
+      'SELECT COUNT(*) as count FROM user_activities WHERE user_id = $1 AND DATE(created_at) = $2',
       [userId, today]
     );
 
     // Add activity
-    await pool.execute(
-      'INSERT INTO user_activities (user_id, category, activity_type, duration_minutes, points, created_at) VALUES (?, ?, ?, ?, ?, NOW())',
+    await pool.query(
+      'INSERT INTO user_activities (user_id, category, activity_type, duration_minutes, points, created_at) VALUES ($1, $2, $3, $4, $5, NOW())',
       [userId, category, activity_type, duration_minutes, points]
     );
 
     // Update user points
-    await pool.execute(
-      'UPDATE users SET total_points = total_points + ? WHERE id = ?',
+    await pool.query(
+      'UPDATE users SET total_points = total_points + $1 WHERE id = $2',
       [points, userId]
     );
 
     // Update streak if first activity today
-    if (todayActivities[0].count === 0) {
-      await pool.execute(
-        'INSERT INTO user_streaks (user_id, current_streak, last_activity_date) VALUES (?, 1, ?) ON DUPLICATE KEY UPDATE current_streak = CASE WHEN DATE(last_activity_date) = DATE_SUB(?, INTERVAL 1 DAY) THEN current_streak + 1 WHEN DATE(last_activity_date) = ? THEN current_streak ELSE 1 END, last_activity_date = ?',
+    if (parseInt(todayActivities[0].count) === 0) {
+      await pool.query(
+        'INSERT INTO user_streaks (user_id, current_streak, last_activity_date) VALUES ($1, 1, $2) ON CONFLICT (user_id) DO UPDATE SET current_streak = CASE WHEN DATE(user_streaks.last_activity_date) = $3::date - INTERVAL \'1 day\' THEN user_streaks.current_streak + 1 WHEN DATE(user_streaks.last_activity_date) = $4::date THEN user_streaks.current_streak ELSE 1 END, last_activity_date = $5',
         [userId, today, today, today, today]
       );
     }
 
     // Get updated stats
-    const [updatedUser] = await pool.execute(
-      'SELECT total_points FROM users WHERE id = ?',
+    const { rows: updatedUser } = await pool.query(
+      'SELECT total_points FROM users WHERE id = $1',
       [userId]
     );
 
-    const [updatedStreak] = await pool.execute(
-      'SELECT current_streak FROM user_streaks WHERE user_id = ?',
+    const { rows: updatedStreak } = await pool.query(
+      'SELECT current_streak FROM user_streaks WHERE user_id = $1',
       [userId]
     );
 
