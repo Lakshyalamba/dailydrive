@@ -2,8 +2,8 @@ import pool from '../config/database.js';
 
 export const getAllPosts = async (req, res) => {
   try {
-    const [posts] = await pool.execute(
-      'SELECT cp.id, cp.title, cp.content, cp.likes_count, cp.created_at, u.name as author_name FROM community_posts cp JOIN users u ON cp.user_id = u.id ORDER BY cp.created_at DESC'
+    const { rows: posts } = await pool.query(
+      'SELECT cp.id, cp.title, cp.content, cp.likes_count, cp.created_at, u.username as author_name FROM community_posts cp JOIN users u ON cp.user_id = u.id ORDER BY cp.created_at DESC'
     );
 
     res.json({ posts });
@@ -21,14 +21,14 @@ export const createPost = async (req, res) => {
   }
 
   try {
-    const [result] = await pool.execute(
-      'INSERT INTO community_posts (user_id, title, content, likes_count, created_at) VALUES (?, ?, ?, 0, NOW())',
+    const { rows: result } = await pool.query(
+      'INSERT INTO community_posts (user_id, title, content, likes_count, created_at) VALUES ($1, $2, $3, 0, NOW()) RETURNING id',
       [userId, title, content]
     );
 
-    const [newPost] = await pool.execute(
-      'SELECT cp.id, cp.title, cp.content, cp.likes_count, cp.created_at, u.name as author_name FROM community_posts cp JOIN users u ON cp.user_id = u.id WHERE cp.id = ?',
-      [result.insertId]
+    const { rows: newPost } = await pool.query(
+      'SELECT cp.id, cp.title, cp.content, cp.likes_count, cp.created_at, u.username as author_name FROM community_posts cp JOIN users u ON cp.user_id = u.id WHERE cp.id = $1',
+      [result[0].id]
     );
 
     res.status(201).json({
@@ -44,17 +44,17 @@ export const likePost = async (req, res) => {
   const { postId } = req.params;
 
   try {
-    const [result] = await pool.execute(
-      'UPDATE community_posts SET likes_count = likes_count + 1 WHERE id = ?',
+    const result = await pool.query(
+      'UPDATE community_posts SET likes_count = likes_count + 1 WHERE id = $1',
       [postId]
     );
 
-    if (result.affectedRows === 0) {
+    if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Post not found' });
     }
 
-    const [post] = await pool.execute(
-      'SELECT likes_count FROM community_posts WHERE id = ?',
+    const { rows: post } = await pool.query(
+      'SELECT likes_count FROM community_posts WHERE id = $1',
       [postId]
     );
 
@@ -71,8 +71,8 @@ export const getSinglePost = async (req, res) => {
   const { postId } = req.params;
 
   try {
-    const [posts] = await pool.execute(
-      'SELECT cp.id, cp.title, cp.content, cp.likes_count, cp.created_at, u.name as author_name, u.id as author_id FROM community_posts cp JOIN users u ON cp.user_id = u.id WHERE cp.id = ?',
+    const { rows: posts } = await pool.query(
+      'SELECT cp.id, cp.title, cp.content, cp.likes_count, cp.created_at, u.username as author_name, u.id as author_id FROM community_posts cp JOIN users u ON cp.user_id = u.id WHERE cp.id = $1',
       [postId]
     );
 
