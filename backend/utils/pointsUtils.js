@@ -23,13 +23,13 @@ export const calculateActivityPoints = (category, duration_minutes) => {
 
 export const updateUserPoints = async (userId, points) => {
   try {
-    await pool.execute(
-      'UPDATE users SET total_points = total_points + ? WHERE id = ?',
+    await pool.query(
+      'UPDATE users SET total_points = total_points + $1 WHERE id = $2',
       [points, userId]
     );
 
-    const [result] = await pool.execute(
-      'SELECT total_points FROM users WHERE id = ?',
+    const { rows: result } = await pool.query(
+      'SELECT total_points FROM users WHERE id = $1',
       [userId]
     );
 
