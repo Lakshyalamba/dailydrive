@@ -18,9 +18,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // Protected Route component
 const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { user, isInitializing } = useAuth();
   
-  if (loading) {
+  if (isInitializing) {
     return <div className="loading-spinner">Loading...</div>;
   }
   
@@ -29,9 +29,9 @@ const ProtectedRoute = ({ children }) => {
 
 // Public Route component (redirects to dashboard if already logged in)
 const PublicRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { user, isInitializing } = useAuth();
   
-  if (loading) {
+  if (isInitializing) {
     return <div className="loading-spinner">Loading...</div>;
   }
   
@@ -39,9 +39,9 @@ const PublicRoute = ({ children }) => {
 };
 
 function AppContent() {
-  const { user, loading } = useAuth();
+  const { user, isInitializing } = useAuth();
   
-  if (loading) {
+  if (isInitializing) {
     return (
       <div className="loading-spinner">
         <div className="spinner-large"></div>

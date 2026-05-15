@@ -14,14 +14,15 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('dailydrive_user');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
-    setLoading(false);
+    setIsInitializing(false);
   }, []);
 
   const login = async (email, password) => {
@@ -247,6 +248,7 @@ export const AuthProvider = ({ children }) => {
     unlockCourse,
     isCourseUnlocked,
     loading,
+    isInitializing,
     getGreeting,
     isAuthenticated: !!user
   };

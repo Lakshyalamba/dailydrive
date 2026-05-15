@@ -15,10 +15,17 @@ export const register = async (req, res) => {
   }
 
   try {
-    const { rows: existing } = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+    const { rows: existing } = await pool.query(
+      'SELECT id, email, username FROM users WHERE email = $1 OR username = $2', 
+      [email, username]
+    );
     
     if (existing.length > 0) {
-      return res.status(400).json({ error: 'User already exists' });
+      const isEmailTaken = existing.some(user => user.email === email);
+      if (isEmailTaken) {
+        return res.status(400).json({ error: 'Email already exists' });
+      }
+      return res.status(400).json({ error: 'Username already taken' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
